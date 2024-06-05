@@ -5,6 +5,7 @@
  */
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <chrono>
 #include <iostream>
 #include <thread>
@@ -40,7 +41,15 @@ int main(int , char **) {
       window, -1, SDL_RENDERER_ACCELERATED);
   errcheck(renderer == nullptr);
 
-  //auto dt = 15ms;
+  int textureWidth = 627;
+  int textureHeight = 663;
+  SDL_Texture* objectTexture = nullptr;
+  objectTexture = IMG_LoadTexture(renderer, "../data/ShipsPNG/ship2.png");
+  SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
+
+
+
+    //auto dt = 15ms;
   milliseconds dt(15);
 
   steady_clock::time_point current_time = steady_clock::now(); // remember current time
