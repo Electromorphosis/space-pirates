@@ -44,7 +44,7 @@ int main(int , char **) {
   int textureWidth = 627;
   int textureHeight = 663;
   SDL_Texture* objectTexture = nullptr;
-  objectTexture = IMG_LoadTexture(renderer, "../data/ShipsPNG/ship2.png");
+  objectTexture = IMG_LoadTexture(renderer, "../data/ShipsPNG/ship0.png");
   SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
 
 
@@ -81,6 +81,7 @@ int main(int , char **) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
     SDL_Rect kwadrat = {x_player, y_player, 10, 10};
     SDL_RenderFillRect(renderer, &kwadrat);
+    SDL_RenderCopy(renderer, objectTexture, NULL, NULL);
 
 
     SDL_RenderPresent(renderer); // draw frame to screen
