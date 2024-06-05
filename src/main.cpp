@@ -6,15 +6,8 @@
 
 #include <SDL2/SDL.h>
 #include <chrono>
-#include <cstdint>
 #include <iostream>
-#include <memory>
-#include <set>
-#include <stdexcept>
-#include <string>
 #include <thread>
-#include <tuple>
-#include <vector>
 
 // check for errors
 #define errcheck(e)                                                            \
@@ -44,7 +37,7 @@ int main(int , char **) {
   errcheck(window == nullptr);
 
   SDL_Renderer *renderer = SDL_CreateRenderer(
-      window, -1, SDL_RENDERER_ACCELERATED); // SDL_RENDERER_PRESENTVSYNC
+      window, -1, SDL_RENDERER_ACCELERATED);
   errcheck(renderer == nullptr);
 
   //auto dt = 15ms;
