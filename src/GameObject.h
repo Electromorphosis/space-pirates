@@ -23,7 +23,6 @@ public:
     void update();
 
     void draw(Window& sdlRenderer);
-
 private:
     VisibilityDelegate* visibilityDelegate_;
     UpdateDelegate* updateDelegate_;

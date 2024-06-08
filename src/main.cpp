@@ -9,6 +9,7 @@
 //#include <chrono>
 //#include <iostream>
 //#include <thread>
+#include <memory>
 #include "Window.h"
 #include "EventSystem.h"
 #include "WorldMap.h"
@@ -23,16 +24,19 @@ int main(int , char **) {
 
     Uint32 lastFrameTime = SDL_GetTicks();
 
-    Window window = Window();
+    Window *window(new Window());
 
     // Init game engine (sub)systems
     EventSystem& eventSystem = EventSystem::GetInstance();
     WorldMap worldMap = WorldMap();
     TextureManager textureManager = TextureManager();
 
-    // Init starting stuff
-    Player player = new Player(window, new Visible(window.getRenderer(), TextureData *textureDataProvided))
-    worldMap.getAllGameObjects().push_back(new WorldMap::MappedObject()))
+    // Init starting stuff for player
+    VisibilityDelegate *playerSprite(new Visible(window->getRenderer(), textureManager.getTextureByName("Player")));
+    UpdateDelegate *playerMovement(new Movable());
+    GameObject *player(new Player(window, playerSprite, playerMovement));
+    auto *mappedPlayer(new WorldMap::MappedObject(player, 0, 0));
+    worldMap.getAllGameObjects().push_back(mappedPlayer);
 
     while(gameRunning) {
 
@@ -46,16 +50,16 @@ int main(int , char **) {
 
         const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
         if (keyboardState[SDL_SCANCODE_W]) {
-            y_player-=velocity;
+            mappedPlayer->y += 1;
         } else if (keyboardState[SDL_SCANCODE_S]) {
-            y_player+=velocity;
+            mappedPlayer->y -= 1;
         } else if (keyboardState[SDL_SCANCODE_A]) {
-            x_player-=velocity;
+            mappedPlayer->x += 1;
         } else if (keyboardState[SDL_SCANCODE_D]) {
-            x_player+=velocity;
+            mappedPlayer->x -= 1;
         }
 
-        window.RenderAll();
+        window->RenderAll();
 
         // Time handling
         Uint32 currentFrameTime = SDL_GetTicks();
