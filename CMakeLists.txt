@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
 
 project (space_pirates CXX)
 
@@ -21,7 +21,8 @@ include_directories(${SDL2_INCLUDE_DIRS})
 include_directories("${PROJECT_SOURCE_DIR}/src")
 include_directories("${PROJECT_SOURCE_DIR}/headers/")
 
-file(GLOB_RECURSE space_pirates_SOURCES "src/*.cpp" "src/*.h")
+file(GLOB_RECURSE space_pirates_CPP_SOURCES "src/*.cpp")
+file(GLOB_RECURSE space_pirates_H_SOURCES "src/*.h")
 
 add_executable(space_pirates ${space_pirates_SOURCES})
 

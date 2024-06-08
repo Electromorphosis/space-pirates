@@ -25,9 +25,9 @@ public:
     Window();
     ~Window();
 
-    std::vector<Object*>globalGameObjects; // Tmp solution for moving POC - finally better solution imo is to have separate GameMapManager?
+//    std::vector<GameObject*> globalGameObjects; // Tmp solution for moving POC - finally better solution imo is to have separate GameMapManager?
 
-    void Render(std::vector<Object*> objToRender);
+//    void Render(std::vector<GameObject*> objToRender);
     void RenderAll();
     void DeInitial(); // Not sure if it would be needed really
 };

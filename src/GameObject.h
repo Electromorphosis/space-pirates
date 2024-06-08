@@ -8,39 +8,29 @@
 #include <string>
 
 #include "Window.h"
-#include "Visibility.h"
-#include "Update.h"
-#include "Collision.h"
+#include "VisibilityDelegate.h"
+#include "UpdateDelegate.h"
+//#include "Collision.h"
 
 
-class GameObject
-{
-    Window* window;
-    VisibilityDelegate* _v;
-    UpdateDelegate* _u;
-    CollisionDelegate* _c;
-
-    float positionX;
-    float positionY;
-
+class GameObject {
 public:
-    virtual GameObject(VisibilityDelegate* v, UpdateDelegate* u, CollisionDelegate* c)
-            : _v(v)
-            , _u(u)
-            , _c(c)
-    {}
+    GameObject(VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate);
+    virtual ~GameObject();
+//               ,CollisionDelegate* c
+//            , _c(c)
 
-    void update() {
-        _u->update();
-    }
+    void update();
 
-    void draw() {
-        _v->draw();
-    }
+    void draw();
 
-    void collide(GameObject gameObject[]) {
-        _c->collide(gameObject);
-    }
+//    void collide(GameObject gameObject[]) {
+//        _c->collide(gameObject);
+//    }
+
+private:
+    VisibilityDelegate* visibilityDelegate_;
+    UpdateDelegate* updateDelegate_;
 };
 
 

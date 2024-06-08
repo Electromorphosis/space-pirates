@@ -3,8 +3,8 @@
 //
 
 #include "Player.h"
-#include "Window.h"
 
-Player(Window *_window) {
-    _window->globalGameObjects.push_back(static_cast<Object*>(this));
+Player::Player(Window* window, VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate)
+        : GameObject(visibilityDelegate, updateDelegate) {
+    // Additional player specific initialization (if any)
 }

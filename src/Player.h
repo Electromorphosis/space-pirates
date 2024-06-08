@@ -6,22 +6,17 @@
 #define SPACE_PIRATES_PLAYER_H
 
 #include "GameObject.h"
-#include "Window.h"
+#include "VisibilityDelegate.h" // Assuming VisibilityDelegate is used
+#include "UpdateDelegate.h"  // Assuming UpdateDelegate is used
 
 class Player : public GameObject {
 public:
-    Player(Window*  *_window)
-            : GameObject(
-            new Visible(),
-            new Movable(),
-            new Solid()) {};
+    Player(Window* window, VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate);
 
-    ~Player();
+    // Additional player specific functions and member variables
 
-    float positionX = 100;
-    float positionY = 100;
-    float velocityX;
-    float velocityY;
+private:
+    // No private member variables needed in this example (assuming everything is inherited)
 };
 
-#endif //SPACE_PIRATES_PLAYER_H
+#endif // SPACE_PIRATES_PLAYER_H

@@ -14,5 +14,5 @@ Window::Window() {
         std::cout << "(SDL) Error when trying to Create Window and/or Renderer" << std::endl;
     }
 
-    player = new Player();
+//    player = new Player();
 }
