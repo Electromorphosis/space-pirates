@@ -7,8 +7,17 @@
 #include "Player.h"
 #include "GlobalSettings.h"
 
+
 WorldMap::WorldMap() {}
 
+WorldMap::~WorldMap() {
+    if(!globalGameObjects.empty()) {
+        for(const std::vector<MappedObject*>& currentGameObject : globalGameObjects ) {
+        delete currentGameObject;
+        }
+    }
+    delete globalGameObjects;
+}
 
 
 std::vector<WorldMap::MappedObject*> WorldMap::getAllGameObjects() {

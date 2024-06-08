@@ -8,10 +8,11 @@
 #include "GameObject.h"
 #include "VisibilityDelegate.h" // Assuming VisibilityDelegate is used
 #include "UpdateDelegate.h"  // Assuming UpdateDelegate is used
+#include "EventSystem.h"
 
 class Player : public GameObject {
 public:
-    Player(Window* window, VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate);
+    Player(Window* window, VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate, );
 
     // Additional player specific functions and member variables
     int getPlayerX();

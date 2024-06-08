@@ -17,6 +17,6 @@ void GameObject::update() {
     updateDelegate_->update();
 }
 
-void GameObject::draw() {
+void GameObject::draw(Window& sdlRenderer) {
     visibilityDelegate_->draw();
 }

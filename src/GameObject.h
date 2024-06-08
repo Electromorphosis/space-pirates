@@ -11,22 +11,18 @@
 #include "VisibilityDelegate.h"
 #include "UpdateDelegate.h"
 //#include "Collision.h"
-
+class Window;
 
 class GameObject {
 public:
     GameObject(VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate);
     virtual ~GameObject();
-//               ,CollisionDelegate* c
-//            , _c(c)
+
+    Window* window;
 
     void update();
 
-    void draw();
-
-//    void collide(GameObject gameObject[]) {
-//        _c->collide(gameObject);
-//    }
+    void draw(Window& sdlRenderer);
 
 private:
     VisibilityDelegate* visibilityDelegate_;

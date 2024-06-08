@@ -16,20 +16,25 @@ class GameObject;
 
 class Window {
 public:
+//    GlobalSettings *globalSettings;
+
     Window();
     ~Window();
 
     void RenderAll(); // Not sure for now if I would need additional singular render functionality.
-SDL_Window getSdlWindow();
-SDL_Renderer getRenderer();
+    void ClearRenderingVectors(); // Using for render "tidy-up" after game stops.
+    SDL_Window *getSdlWindow();
+    SDL_Renderer *getRenderer();
     std::vector<GameObject*> getVisibleGameObjects();
     GlobalSettings getGlobalSettings();
+
 private:
     SDL_Window *sdlWindowObject;
     SDL_Renderer *sdlRenderer;
-    GlobalSettings *globalSettings_;
+
     std::vector<GameObject*> visibleGameObjects; // Tmp solution for moving POC - finally better solution imo is to have separate GameMapManager?
-    const GlobalSettings& settings_ = GlobalSettings::GetInstance(); // Get the instance
+//    const GlobalSettings& settings_ = GlobalSettings::GetInstance(); // Get the instance
+
 };
 
 

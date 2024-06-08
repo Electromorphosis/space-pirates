@@ -12,8 +12,9 @@ public:
 
     void SetWindowWidth(int newWidth);
     void SetWindowHeight(int newWidth);
-    int GetWindowWidth(int newWidth);
-    int GetWindowHeight(int newWidth);
+    int GetWindowWidth();
+    int GetWindowHeight();
+    Uint32 GetFramerate();
 
 private:
     static GlobalSettings instance_;
@@ -21,7 +22,7 @@ private:
 
     int WINDOW_WIDTH = 1000;
     int WINDOW_HEIGHT = 1000;
-
+    const Uint32 MS_PER_FRAME = 1000 / 60; // Limit FPS do 60
 };
 
 
