@@ -24,7 +24,7 @@ include_directories("${PROJECT_SOURCE_DIR}/headers/")
 file(GLOB_RECURSE space_pirates_CPP_SOURCES "src/*.cpp")
 file(GLOB_RECURSE space_pirates_H_SOURCES "src/*.h")
 
-add_executable(space_pirates ${space_pirates_SOURCES})
+add_executable(space_pirates ${space_pirates_CPP_SOURCES} ${space_pirates_H_SOURCES})
 
 target_link_libraries(space_pirates ${SDL2_LIBRARIES} SDL2_image)
 

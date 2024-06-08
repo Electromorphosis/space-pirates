@@ -12,24 +12,24 @@
 #include "GlobalSettings.h"
 #include "GameObject.h"
 
+class GameObject;
+
 class Window {
 public:
-    SDL_Window *sdl_window_obj;
-    SDL_Renderer *renderer;
-
-    GlobalSettings* _GS;
-
-    int windowWidth = _GS->WINDOW_WIDTH;
-    int windowHeight = _GS->WINDOW_HEIGHT;
-
     Window();
     ~Window();
 
-//    std::vector<GameObject*> globalGameObjects; // Tmp solution for moving POC - finally better solution imo is to have separate GameMapManager?
-
-//    void Render(std::vector<GameObject*> objToRender);
-    void RenderAll();
-    void DeInitial(); // Not sure if it would be needed really
+    void RenderAll(); // Not sure for now if I would need additional singular render functionality.
+SDL_Window getSdlWindow();
+SDL_Renderer getRenderer();
+    std::vector<GameObject*> getVisibleGameObjects();
+    GlobalSettings getGlobalSettings();
+private:
+    SDL_Window *sdlWindowObject;
+    SDL_Renderer *sdlRenderer;
+    GlobalSettings *globalSettings_;
+    std::vector<GameObject*> visibleGameObjects; // Tmp solution for moving POC - finally better solution imo is to have separate GameMapManager?
+    const GlobalSettings& settings_ = GlobalSettings::GetInstance(); // Get the instance
 };
 
 

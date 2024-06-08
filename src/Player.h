@@ -14,9 +14,12 @@ public:
     Player(Window* window, VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate);
 
     // Additional player specific functions and member variables
+    int getPlayerX();
+    int getPlayerY();
 
 private:
-    // No private member variables needed in this example (assuming everything is inherited)
+    int playerX = 0;
+    int playerY = 0;
 };
 
 #endif // SPACE_PIRATES_PLAYER_H

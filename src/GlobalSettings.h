@@ -8,8 +8,20 @@
 class GlobalSettings
 {
 public:
+    static GlobalSettings& GetInstance();
+
+    void SetWindowWidth(int newWidth);
+    void SetWindowHeight(int newWidth);
+    int GetWindowWidth(int newWidth);
+    int GetWindowHeight(int newWidth);
+
+private:
+    static GlobalSettings instance_;
+    GlobalSettings() = default;
+
     int WINDOW_WIDTH = 1000;
     int WINDOW_HEIGHT = 1000;
+
 };
 
 

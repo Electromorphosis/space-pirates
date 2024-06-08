@@ -8,3 +8,11 @@ Player::Player(Window* window, VisibilityDelegate* visibilityDelegate, UpdateDel
         : GameObject(visibilityDelegate, updateDelegate) {
     // Additional player specific initialization (if any)
 }
+
+int Player::getPlayerX() {
+    return playerX;
+}
+
+int Player::getPlayerY() {
+    return playerY;
+}
