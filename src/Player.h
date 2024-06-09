@@ -15,6 +15,8 @@ public:
     float positionY = 0;
     float velocity = 0;
     int angle = 0;
+
+    void Render(Window &renderer) override;
 };
 
 
