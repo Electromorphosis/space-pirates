@@ -4,15 +4,17 @@
 
 #include "Player.h"
 
-Player::Player(Window* window, VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate)
-        : GameObject(visibilityDelegate, updateDelegate) {
-    // Additional player specific initialization (if any)
-}
+void Player::draw(Window &window) {
+    GameObject::draw(window);
 
-int Player::getPlayerX() {
-    return playerX;
-}
 
-int Player::getPlayerY() {
-    return playerY;
+    SDL_Rect dstRect = { x, static_cast<int>(y), 32, 32 };
+    SDL_Rect srcRect = { 0 , 0, 32, 32 };;
+
+
+
+
+
+    SDL_RendererFlip flip;
+    SDL_RenderCopyEx(window.getRenderer(), objectTexture, &srcRect, &dstRect,0.0f, NULL, flip);
 }

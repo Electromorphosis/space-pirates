@@ -5,6 +5,8 @@
 #ifndef SPACE_PIRATES_GLOBALSETTINGS_H
 #define SPACE_PIRATES_GLOBALSETTINGS_H
 
+#include <SDL2/SDL_stdinc.h>
+
 class GlobalSettings
 {
 public:

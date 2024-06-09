@@ -14,18 +14,24 @@
 class Window;
 
 class GameObject {
-public:
-    GameObject(VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate);
-    virtual ~GameObject();
-
-    Window* window;
-
-    void update();
-
-    void draw(Window& sdlRenderer);
-private:
     VisibilityDelegate* visibilityDelegate_;
     UpdateDelegate* updateDelegate_;
+public:
+    GameObject(VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate)
+    : visibilityDelegate_(visibilityDelegate)
+    , updateDelegate_(updateDelegate)
+    {}
+
+    virtual ~GameObject();
+
+    SDL_Texture* objectTexture = nullptr;
+    void update();
+
+    virtual void draw(Window& sdlRenderer);
+
+
+    int x = 0;
+    int y = 0;
 };
 
 

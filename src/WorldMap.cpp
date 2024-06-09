@@ -11,12 +11,12 @@
 WorldMap::WorldMap() {}
 
 WorldMap::~WorldMap() {
-    if(!globalGameObjects.empty()) {
-        for(const std::vector<MappedObject*>& currentGameObject : globalGameObjects ) {
-        delete currentGameObject;
-        }
-    }
-    delete globalGameObjects;
+//    if(!globalGameObjects.empty()) {
+//        for(const std::vector<MappedObject*>& currentGameObject : globalGameObjects ) {
+//        delete currentGameObject;
+//        }
+//    }
+//    delete globalGameObjects;
 }
 
 

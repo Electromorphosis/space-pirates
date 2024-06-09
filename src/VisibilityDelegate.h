@@ -37,7 +37,7 @@ public:
     explicit Visible(SDL_Renderer* sdlRenderer, TextureData *textureDataProvided) : VisibilityDelegate() {
         this->textureData = textureDataProvided;
         objectTexture = IMG_LoadTexture(sdlRenderer, textureDataProvided->textureFilepath.c_str());
-        if (SDL_QueryTexture(objectTexture, nullptr, nullptr, textureData->textureWidth, textureData->textureHeight) == -1) {
+        if (SDL_QueryTexture(objectTexture, nullptr, nullptr,  &textureData->textureWidth, &textureData->textureHeight) == -1) {
             std::cout << "(SDL) Error when loading texture on filepath:" << textureData->textureFilepath << std::endl;
         };
     };

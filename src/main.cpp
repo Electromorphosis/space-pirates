@@ -5,75 +5,93 @@
  */
 
 #include <SDL2/SDL.h>
-//#include <SDL2/SDL_image.h>
-//#include <chrono>
-//#include <iostream>
-//#include <thread>
-#include <memory>
-#include "Window.h"
-#include "EventSystem.h"
-#include "WorldMap.h"
-#include "TextureManager.h"
+#include <SDL2/SDL_image.h>
+#include <chrono>
+#include <iostream>
+#include <thread>
+//
+//// check for errors
+//#define errcheck(e)                                                            \
+//  {                                                                            \
+//    if (e) {                                                                   \
+//      cout << SDL_GetError() << endl;                                          \
+//      SDL_Quit();                                                              \
+//      return -1;                                                               \
+//    }                                                                          \
+//  }
+
+int x_player = 200;
+int y_player = 200;
+int velocity = 1;
 
 int main(int , char **) {
-    using namespace std;
-    GlobalSettings& globalSettings = GlobalSettings::GetInstance();
+  using namespace std;
+//  using namespace std::chrono;
+  const int width = 500;
+  const int height = 500;
 
-    bool gameRunning = true;
-    float deltaTime = 0.4;
+//  errcheck(SDL_Init(SDL_INIT_VIDEO) != 0);
 
-    Uint32 lastFrameTime = SDL_GetTicks();
+  SDL_Window *window = SDL_CreateWindow(
+      "My Next Superawesome Game", SDL_WINDOWPOS_UNDEFINED,
+      SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+//  errcheck(window == nullptr);
 
-    Window *window(new Window());
+  SDL_Renderer *renderer = SDL_CreateRenderer(
+      window, -1, SDL_RENDERER_ACCELERATED);
+//  errcheck(renderer == nullptr);
 
-    // Init game engine (sub)systems
-    EventSystem& eventSystem = EventSystem::GetInstance();
-    WorldMap worldMap = WorldMap();
-    TextureManager textureManager = TextureManager();
+  int textureWidth = 32;
+  int textureHeight = 32;
+  SDL_Texture* objectTexture = IMG_LoadTexture(renderer, "../data/ShipsPNG/ship0.png");
+  SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
 
-    // Init starting stuff for player
-    VisibilityDelegate *playerSprite(new Visible(window->getRenderer(), textureManager.getTextureByName("Player")));
-    UpdateDelegate *playerMovement(new Movable());
-    GameObject *player(new Player(window, playerSprite, playerMovement));
-    auto *mappedPlayer(new WorldMap::MappedObject(player, 0, 0));
-    worldMap.getAllGameObjects().push_back(mappedPlayer);
 
-    while(gameRunning) {
 
-        // Event Grabber
-        int polledSdlEvent;
-        while ((polledSdlEvent = SDL_PollEvent(eventSystem.sdlEventObjectRef)) != 0) {
-            if (polledSdlEvent == SDL_QUIT) {
-                gameRunning = false;
-            }
-        }
+    //auto dt = 15ms;
+//  milliseconds dt(15);
 
-        const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
-        if (keyboardState[SDL_SCANCODE_W]) {
-            mappedPlayer->y += 1;
-        } else if (keyboardState[SDL_SCANCODE_S]) {
-            mappedPlayer->y -= 1;
-        } else if (keyboardState[SDL_SCANCODE_A]) {
-            mappedPlayer->x += 1;
-        } else if (keyboardState[SDL_SCANCODE_D]) {
-            mappedPlayer->x -= 1;
-        }
+//  steady_clock::time_point current_time = steady_clock::now(); // remember current time
+  for (bool game_active = true; game_active;) {
+      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+      SDL_RenderClear(renderer);
 
-        window->RenderAll();
-
-        // Time handling
-        Uint32 currentFrameTime = SDL_GetTicks();
-        Uint32 elapsedTime = currentFrameTime - lastFrameTime;
-        Uint32 framerate = globalSettings.GetFramerate();
-
-        if (elapsedTime < framerate) {
-            SDL_Delay(framerate - elapsedTime);
-        }
-
-        lastFrameTime = SDL_GetTicks();
-        deltaTime = ((elapsedTime) / 1000.0f) + 0.001f;
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) { // check if there are some events
+      if (event.type == SDL_QUIT)
+        game_active = false;
     }
 
-    return 0;
-}
+      const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
 
+// Todo: Add velocity vector which is applied at the end of the scan, so that <<possibly>> it will work for multi-key combos
+      if (keyboardState[SDL_SCANCODE_W]) {
+          y_player-=velocity;
+      } else if (keyboardState[SDL_SCANCODE_S]) {
+          y_player+=velocity;
+      } else if (keyboardState[SDL_SCANCODE_A]) {
+          x_player-=velocity;
+      } else if (keyboardState[SDL_SCANCODE_D]) {
+          x_player+=velocity;
+      } else {
+
+      }
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+    SDL_Rect kwadrat = {x_player, y_player, 10, 10};
+    SDL_RenderFillRect(renderer, &kwadrat);
+
+      SDL_Rect dstRect = { x_player, static_cast<int>(y_player), 32, 32 };
+      SDL_Rect srcRect = { 0 , 0, 32, 32 };;
+    SDL_RenderCopy(renderer, objectTexture, &srcRect, &dstRect);
+
+
+    SDL_RenderPresent(renderer); // draw frame to screen
+
+//    this_thread::sleep_until(current_time = current_time + dt);
+  }
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(window);
+  SDL_Quit();
+  return 0;
+}

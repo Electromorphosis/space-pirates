@@ -12,7 +12,15 @@
 
 class Player : public GameObject {
 public:
-    Player(Window* window, VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate);
+    Player(SDL_Renderer* sdlRenderer, TextureData* textureData)
+    : GameObject(new Visible(sdlRenderer, textureData), new Movable()) {
+        objectTexture = IMG_LoadTexture(sdlRenderer, "../data/ShipsPNG/ship0.png");
+        SDL_QueryTexture(objectTexture, NULL, NULL, new int(32), new int(32)); // Todo - don't do it like that, memory leak will occur
+
+    };
+
+    void draw(Window& window) override;
+
 
 };
 

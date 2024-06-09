@@ -4,9 +4,6 @@
 
 #include "GameObject.h"
 
-GameObject::GameObject(VisibilityDelegate* visibilityDelegate, UpdateDelegate* updateDelegate)
-        : visibilityDelegate_(visibilityDelegate), updateDelegate_(updateDelegate) {}
-
 GameObject::~GameObject() {
     // Destructor implementation (if needed for derived classes with dynamically allocated delegates)
     // delete visibilityDelegate_;
@@ -17,6 +14,6 @@ void GameObject::update() {
     updateDelegate_->update();
 }
 
-void GameObject::draw(Window& sdlRenderer) {
-    visibilityDelegate_->draw();
+void GameObject::draw(Window& _window) {
+    visibilityDelegate_->draw(_window.getRenderer());
 }

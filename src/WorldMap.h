@@ -12,15 +12,15 @@
 class WorldMap {
 public:
     struct MappedObject{
-        MappedObject(GameObject* _gameObject, int initX, int initY){
-            gameObject = _gameObject;
+        MappedObject(GameObject* gameObject, int initX, int initY){
+            mappedGameObject = gameObject;
             x = initX;
             y = initY;
         }
 
         int x;
         int y;
-        GameObject* gameObject;
+        GameObject* mappedGameObject;
     };
 
     WorldMap();

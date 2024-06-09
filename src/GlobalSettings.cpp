@@ -22,7 +22,3 @@ int GlobalSettings::GetWindowWidth() {
 Uint32 GlobalSettings::GetFramerate() {
     return MS_PER_FRAME;
 }
-
-float GlobalSettings::getDeltaTime() {
-    return MS_PER_FRAME;
-}

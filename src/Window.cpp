@@ -38,7 +38,7 @@ void Window::RenderAll() {
     for(auto currentGameObject : visibleGameObjects){
 
         if(currentGameObject)
-            currentGameObject->draw();
+            currentGameObject->draw(*this);
     }
 
 

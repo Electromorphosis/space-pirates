@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <string>
+class TextureData;
 
 class TextureManager {
 public:
@@ -17,6 +18,9 @@ public:
 
     TextureData* getTextureByName(std::string name);
 
+    TextureData* playerTexture;
+    std::string textureDataRootPath;
+    int playerTextureWidth;
 private:
     std::vector<TextureData*> textureDataVector;
 };
