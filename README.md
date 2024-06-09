@@ -11,6 +11,7 @@ Not all of those might actually be needed to be implemented, but I needed some d
 - includes optimization - move headers to separate directory, implement global headers, namespaces and check includes order (e.g. standard libs, then third-parties, then internal).
 - refactor TextureManager - for big number of texture metadata, it might be better to store them in a separate file, e.g. csv file and use some method to en-masse initalize all TextureData objects into their vector.
 - use smart pointers instead of raw ones, e.g. for components; possibly also might consider some ComponentManager akin to TextureManager.
+- keyboard handler to not trash main logic with multiple keyboard inputs (alongside with probably a lot of other main.cpp cleanings)
 
 ## Sources / Architecture patterns
 https://en.wikipedia.org/wiki/Composition_over_inheritance - inspired by Starcraft blogpost I decided to try (meta?)pattern of Composition over inheritance and thus introducing delegates instead of traditional object family tree. Hopefully this helps with avoiding major project redefinition in case of change of requirements during the coding...
