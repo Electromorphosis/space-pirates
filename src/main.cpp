@@ -9,6 +9,8 @@
 //#include <chrono>
 #include <iostream>
 #include <thread>
+#include <vector>
+#include "MovementUtility.h"
 
 //// check for errors
 //#define errcheck(e)                                                            \
@@ -19,13 +21,21 @@
 //      return -1;                                                               \
 //    }                                                                          \
 //  }
-
+std::vector<int> playerInGameCoords;
 int x_player = 200;
 int y_player = 200;
-int velocity = 1;
+float velocity = 0;
+std::vector<float> playerAbsoluteCoords;
+float x_player_abs = 200.0;
+float y_player_abs = 200.0;
 
 int main(int , char **) {
   using namespace std;
+  MovementUtility* movementUtility = new MovementUtility();
+  playerInGameCoords.push_back(x_player);
+  playerInGameCoords.push_back(y_player);
+  playerAbsoluteCoords.push_back(x_player_abs);
+  playerAbsoluteCoords.push_back(y_player_abs);
 //  using namespace std::chrono;
   const int width = 500;
   const int height = 500;
@@ -67,19 +77,30 @@ int playerAngle = 0;
 
 // Todo: Add velocity vector which is applied at the end of the scan, so that <<possibly>> it will work for multi-key combos
       if (keyboardState[SDL_SCANCODE_W]) {
-          y_player-=velocity;
+          velocity += 0.1;
       } else if (keyboardState[SDL_SCANCODE_S]) {
-          y_player+=velocity;
+          velocity -= 0.1;
       } else if (keyboardState[SDL_SCANCODE_A]) {
-          playerAngle-=velocity;
+          playerAngle-=1;
       } else if (keyboardState[SDL_SCANCODE_D]) {
-          playerAngle+=velocity;
+          playerAngle+=1;
       } else {
 
       }
+        SDL_Log("Velocity: %f", velocity);
+      SDL_Log("Angle: %i*", playerAngle);
+      if (velocity < -0.5) velocity = -0.5;
+      if (velocity > 1) velocity = 1;
 
       playerAngle %= 360;
-    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+      std::vector<float> newMovementVector = movementUtility->calculate(playerAngle);
+//      SDL_Log("%f, %f", newMovementVector.at(0), newMovementVector.at(1));
+      playerAbsoluteCoords.at(0) += newMovementVector.at(0) * velocity;
+      playerAbsoluteCoords.at(1) -= newMovementVector.at(1) * velocity;
+        x_player = static_cast<int>(playerAbsoluteCoords.at(0));
+      y_player = static_cast<int>(playerAbsoluteCoords.at(1));
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_Rect kwadrat = {x_player, y_player, 10, 10};
     SDL_RenderFillRect(renderer, &kwadrat);
 
@@ -109,3 +130,4 @@ int playerAngle = 0;
   SDL_Quit();
   return 0;
 }
+
