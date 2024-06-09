@@ -1,26 +1,8 @@
-/**
- * This is the simple hello world for SDL2.
- * 
- * You need C++14 to compile this.
- */
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-//#include <chrono>
-#include <iostream>
-#include <thread>
 #include <vector>
 #include "MovementUtility.h"
 #include "Player.h"
-//// check for errors
-//#define errcheck(e)                                                            \
-//  {                                                                            \
-//    if (e) {                                                                   \
-//      cout << SDL_GetError() << endl;                                          \
-//      SDL_Quit();                                                              \
-//      return -1;                                                               \
-//    }                                                                          \
-//  }
 
 
 int main(int , char **) {
@@ -28,35 +10,28 @@ int main(int , char **) {
   MovementUtility* movementUtility = new MovementUtility();
 
 
-//  using namespace std::chrono;
   const int width = 500;
   const int height = 500;
-    float DeltaTime = 0.4;
-//  errcheck(SDL_Init(SDL_INIT_VIDEO) != 0);
+    float DeltaTime;
   SDL_Window *window = SDL_CreateWindow(
       "My Next Superawesome Game", SDL_WINDOWPOS_UNDEFINED,
       SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
-//  errcheck(window == nullptr);
 
   SDL_Renderer *renderer = SDL_CreateRenderer(
       window, -1, SDL_RENDERER_ACCELERATED);
-//  errcheck(renderer == nullptr);
 
     Player player;
     player.objectTexture = IMG_LoadTexture(renderer, "../data/ShipsPNG/ship0.png");
     SDL_QueryTexture(player.objectTexture, NULL, NULL, &player.textureWidth, &player.textureHeight);
 
-    int x_player_render = static_cast<int>(player.positionX);
-    int y_player_render = static_cast<int>(player.positionY);
+    int x_player_render;
+    int y_player_render;
     Uint32 lastFrameTime = SDL_GetTicks();
 
     const Uint32 MS_PER_FRAME = 1000 / 60; // Limit FPS do 60
 
 
-    //auto dt = 15ms;
-//  milliseconds dt(15);
 
-//  steady_clock::time_point current_time = steady_clock::now(); // remember current time
   for (bool game_active = true; game_active;) {
       SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
       SDL_RenderClear(renderer);
@@ -119,7 +94,6 @@ int main(int , char **) {
       DeltaTime = ((elapsedTime) / 1000.0f) + 0.001f;
 
 
-//    this_thread::sleep_until(current_time = current_time + dt);
   }
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
