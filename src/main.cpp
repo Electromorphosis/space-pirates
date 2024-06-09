@@ -3,7 +3,7 @@
 #include <vector>
 #include "MovementUtility.h"
 #include "Player.h"
-
+#include "Window.h"
 
 int main(int , char **) {
   using namespace std;
@@ -13,19 +13,13 @@ int main(int , char **) {
   const int width = 500;
   const int height = 500;
     float DeltaTime;
-  SDL_Window *window = SDL_CreateWindow(
-      "My Next Superawesome Game", SDL_WINDOWPOS_UNDEFINED,
-      SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
 
-  SDL_Renderer *renderer = SDL_CreateRenderer(
-      window, -1, SDL_RENDERER_ACCELERATED);
-
+    Window window(width, height);
     Player player;
-    player.objectTexture = IMG_LoadTexture(renderer, "../data/ShipsPNG/ship0.png");
+    player.objectTexture = IMG_LoadTexture(window.renderer, "../data/ShipsPNG/ship0.png"); // Todo this and one below move to some Texture Management class
     SDL_QueryTexture(player.objectTexture, NULL, NULL, &player.textureWidth, &player.textureHeight);
 
-    int x_player_render;
-    int y_player_render;
+    window.gameObjectsVector.push_back(&player);
     Uint32 lastFrameTime = SDL_GetTicks();
 
     const Uint32 MS_PER_FRAME = 1000 / 60; // Limit FPS do 60
@@ -33,8 +27,7 @@ int main(int , char **) {
 
 
   for (bool game_active = true; game_active;) {
-      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-      SDL_RenderClear(renderer);
+
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) { // check if there are some events
@@ -67,21 +60,12 @@ int main(int , char **) {
 //      SDL_Log("%f, %f", newMovementVector.at(0), newMovementVector.at(1));
       player.positionX += newMovementVector.at(0) * player.velocity;
       player.positionY -= newMovementVector.at(1) * player.velocity;
-        x_player_render = static_cast<int>(player.positionX);
-      y_player_render = static_cast<int>(player.positionY);
+      player.renderPosX = static_cast<int>(player.positionX);
+      player.renderPosY = static_cast<int>(player.positionY);
 
-      SDL_Log("Player coordinates: {%i, %i}", x_player_render, y_player_render);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-    SDL_Rect kwadrat = {x_player_render, y_player_render, 10, 10};
-    SDL_RenderFillRect(renderer, &kwadrat);
+//      SDL_Log("Player coordinates: {%i, %i}", player.renderPosX, player.renderPosY);
 
-      SDL_Rect dstRect = { x_player_render, y_player_render, 32, 32 };
-      SDL_Rect srcRect = { 0 , 0, 32, 32 };;
-      SDL_RendererFlip flip;
-    SDL_RenderCopyEx(renderer, player.objectTexture, &srcRect, &dstRect, player.angle, nullptr, flip);
-
-
-    SDL_RenderPresent(renderer); // draw frame to screen
+        window.RenderAll();
       Uint32 currentFrameTime = SDL_GetTicks();
       Uint32 elapsedTime = currentFrameTime - lastFrameTime;
 
@@ -95,9 +79,7 @@ int main(int , char **) {
 
 
   }
-  SDL_DestroyRenderer(renderer);
-  SDL_DestroyWindow(window);
-  SDL_Quit();
+
   return 0;
 }
 
