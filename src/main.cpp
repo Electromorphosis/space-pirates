@@ -11,7 +11,7 @@
 #include <thread>
 #include <vector>
 #include "MovementUtility.h"
-
+#include "Player.h"
 //// check for errors
 //#define errcheck(e)                                                            \
 //  {                                                                            \
@@ -21,27 +21,18 @@
 //      return -1;                                                               \
 //    }                                                                          \
 //  }
-std::vector<int> playerInGameCoords;
-int x_player = 200;
-int y_player = 200;
-float velocity = 0;
-std::vector<float> playerAbsoluteCoords;
-float x_player_abs = 200.0;
-float y_player_abs = 200.0;
+
 
 int main(int , char **) {
   using namespace std;
   MovementUtility* movementUtility = new MovementUtility();
-  playerInGameCoords.push_back(x_player);
-  playerInGameCoords.push_back(y_player);
-  playerAbsoluteCoords.push_back(x_player_abs);
-  playerAbsoluteCoords.push_back(y_player_abs);
+
+
 //  using namespace std::chrono;
   const int width = 500;
   const int height = 500;
     float DeltaTime = 0.4;
 //  errcheck(SDL_Init(SDL_INIT_VIDEO) != 0);
-int playerAngle = 0;
   SDL_Window *window = SDL_CreateWindow(
       "My Next Superawesome Game", SDL_WINDOWPOS_UNDEFINED,
       SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
@@ -51,11 +42,14 @@ int playerAngle = 0;
       window, -1, SDL_RENDERER_ACCELERATED);
 //  errcheck(renderer == nullptr);
 
-  int textureWidth = 32;
-  int textureHeight = 32;
-  SDL_Texture* objectTexture = IMG_LoadTexture(renderer, "../data/ShipsPNG/ship0.png");
-  SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
+    Player player;
+    player.objectTexture = IMG_LoadTexture(renderer, "../data/ShipsPNG/ship0.png");
+    SDL_QueryTexture(player.objectTexture, NULL, NULL, &player.textureWidth, &player.textureHeight);
+
+    int x_player_render = static_cast<int>(player.positionX);
+    int y_player_render = static_cast<int>(player.positionY);
     Uint32 lastFrameTime = SDL_GetTicks();
+
     const Uint32 MS_PER_FRAME = 1000 / 60; // Limit FPS do 60
 
 
@@ -77,38 +71,39 @@ int playerAngle = 0;
 
 // Todo: Add velocity vector which is applied at the end of the scan, so that <<possibly>> it will work for multi-key combos
       if (keyboardState[SDL_SCANCODE_W]) {
-          velocity += 0.1;
+          player.velocity += 0.1;
       }
       if (keyboardState[SDL_SCANCODE_S]) {
-          velocity -= 0.1;
+          player.velocity -= 0.1;
       }
       if (keyboardState[SDL_SCANCODE_A]) {
-          playerAngle-=1;
+          player.angle-=1;
       }
       if (keyboardState[SDL_SCANCODE_D]) {
-          playerAngle+=1;
+          player.angle+=1;
       }
-        SDL_Log("Velocity: %f", velocity);
-      SDL_Log("Angle: %i*", playerAngle);
-      if (velocity < -0.5) velocity = -0.5;
-      if (velocity > 1) velocity = 1;
+//        SDL_Log("Velocity: %f", player.velocity);
+//      SDL_Log("Angle: %i*", player.angle);
+      if (player.velocity < -0.5) player.velocity = -0.5;
+      if (player.velocity > 1) player.velocity = 1;
 
-      playerAngle %= 360;
-      std::vector<float> newMovementVector = movementUtility->calculate(playerAngle);
+
+      std::vector<float> newMovementVector = movementUtility->calculate(player.angle);
 //      SDL_Log("%f, %f", newMovementVector.at(0), newMovementVector.at(1));
-      playerAbsoluteCoords.at(0) += newMovementVector.at(0) * velocity;
-      playerAbsoluteCoords.at(1) -= newMovementVector.at(1) * velocity;
-        x_player = static_cast<int>(playerAbsoluteCoords.at(0));
-      y_player = static_cast<int>(playerAbsoluteCoords.at(1));
+      player.positionX += newMovementVector.at(0) * player.velocity;
+      player.positionY -= newMovementVector.at(1) * player.velocity;
+        x_player_render = static_cast<int>(player.positionX);
+      y_player_render = static_cast<int>(player.positionY);
 
+      SDL_Log("Player coordinates: {%i, %i}", x_player_render, y_player_render);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-    SDL_Rect kwadrat = {x_player, y_player, 10, 10};
+    SDL_Rect kwadrat = {x_player_render, y_player_render, 10, 10};
     SDL_RenderFillRect(renderer, &kwadrat);
 
-      SDL_Rect dstRect = { x_player, y_player, 32, 32 };
+      SDL_Rect dstRect = { x_player_render, y_player_render, 32, 32 };
       SDL_Rect srcRect = { 0 , 0, 32, 32 };;
       SDL_RendererFlip flip;
-    SDL_RenderCopyEx(renderer, objectTexture, &srcRect, &dstRect, playerAngle, nullptr, flip);
+    SDL_RenderCopyEx(renderer, player.objectTexture, &srcRect, &dstRect, player.angle, nullptr, flip);
 
 
     SDL_RenderPresent(renderer); // draw frame to screen
