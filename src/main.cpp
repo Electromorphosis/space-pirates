@@ -31,7 +31,7 @@ int main(int , char **) {
   const int height = 500;
     float DeltaTime = 0.4;
 //  errcheck(SDL_Init(SDL_INIT_VIDEO) != 0);
-
+int playerAngle = 0;
   SDL_Window *window = SDL_CreateWindow(
       "My Next Superawesome Game", SDL_WINDOWPOS_UNDEFINED,
       SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
@@ -71,20 +71,22 @@ int main(int , char **) {
       } else if (keyboardState[SDL_SCANCODE_S]) {
           y_player+=velocity;
       } else if (keyboardState[SDL_SCANCODE_A]) {
-          x_player-=velocity;
+          playerAngle-=velocity;
       } else if (keyboardState[SDL_SCANCODE_D]) {
-          x_player+=velocity;
+          playerAngle+=velocity;
       } else {
 
       }
 
+      playerAngle %= 360;
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
     SDL_Rect kwadrat = {x_player, y_player, 10, 10};
     SDL_RenderFillRect(renderer, &kwadrat);
 
       SDL_Rect dstRect = { x_player, y_player, 32, 32 };
       SDL_Rect srcRect = { 0 , 0, 32, 32 };;
-    SDL_RenderCopy(renderer, objectTexture, &srcRect, &dstRect);
+      SDL_RendererFlip flip;
+    SDL_RenderCopyEx(renderer, objectTexture, &srcRect, &dstRect, playerAngle, nullptr, flip);
 
 
     SDL_RenderPresent(renderer); // draw frame to screen
