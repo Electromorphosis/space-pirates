@@ -6,10 +6,10 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <chrono>
+//#include <chrono>
 #include <iostream>
 #include <thread>
-//
+
 //// check for errors
 //#define errcheck(e)                                                            \
 //  {                                                                            \
@@ -29,7 +29,7 @@ int main(int , char **) {
 //  using namespace std::chrono;
   const int width = 500;
   const int height = 500;
-
+    float DeltaTime = 0.4;
 //  errcheck(SDL_Init(SDL_INIT_VIDEO) != 0);
 
   SDL_Window *window = SDL_CreateWindow(
@@ -45,7 +45,8 @@ int main(int , char **) {
   int textureHeight = 32;
   SDL_Texture* objectTexture = IMG_LoadTexture(renderer, "../data/ShipsPNG/ship0.png");
   SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
-
+    Uint32 lastFrameTime = SDL_GetTicks();
+    const Uint32 MS_PER_FRAME = 1000 / 60; // Limit FPS do 60
 
 
     //auto dt = 15ms;
@@ -81,12 +82,23 @@ int main(int , char **) {
     SDL_Rect kwadrat = {x_player, y_player, 10, 10};
     SDL_RenderFillRect(renderer, &kwadrat);
 
-      SDL_Rect dstRect = { x_player, static_cast<int>(y_player), 32, 32 };
+      SDL_Rect dstRect = { x_player, y_player, 32, 32 };
       SDL_Rect srcRect = { 0 , 0, 32, 32 };;
     SDL_RenderCopy(renderer, objectTexture, &srcRect, &dstRect);
 
 
     SDL_RenderPresent(renderer); // draw frame to screen
+      Uint32 currentFrameTime = SDL_GetTicks();
+      Uint32 elapsedTime = currentFrameTime - lastFrameTime;
+
+      if (elapsedTime < MS_PER_FRAME) {
+          SDL_Delay(MS_PER_FRAME - elapsedTime);
+      }
+
+      lastFrameTime = SDL_GetTicks();
+
+      DeltaTime = ((elapsedTime) / 1000.0f) + 0.001f;
+
 
 //    this_thread::sleep_until(current_time = current_time + dt);
   }
