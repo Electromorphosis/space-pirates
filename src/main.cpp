@@ -78,14 +78,15 @@ int playerAngle = 0;
 // Todo: Add velocity vector which is applied at the end of the scan, so that <<possibly>> it will work for multi-key combos
       if (keyboardState[SDL_SCANCODE_W]) {
           velocity += 0.1;
-      } else if (keyboardState[SDL_SCANCODE_S]) {
+      }
+      if (keyboardState[SDL_SCANCODE_S]) {
           velocity -= 0.1;
-      } else if (keyboardState[SDL_SCANCODE_A]) {
+      }
+      if (keyboardState[SDL_SCANCODE_A]) {
           playerAngle-=1;
-      } else if (keyboardState[SDL_SCANCODE_D]) {
+      }
+      if (keyboardState[SDL_SCANCODE_D]) {
           playerAngle+=1;
-      } else {
-
       }
         SDL_Log("Velocity: %f", velocity);
       SDL_Log("Angle: %i*", playerAngle);
