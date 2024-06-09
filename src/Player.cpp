@@ -3,9 +3,12 @@
 //
 
 #include "Player.h"
+#include "Window.h"
 
-Player::Player() : GameObject() {
-
+Player::Player(Window* _window){
+    window = _window;
+    objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/ship0.png"); // Todo this and one below move to some Texture Management class
+    SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
 
 }
 

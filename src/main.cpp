@@ -3,6 +3,7 @@
 #include <vector>
 #include "MovementUtility.h"
 #include "Player.h"
+#include "Rock.h"
 #include "Window.h"
 
 int main(int , char **) {
@@ -15,9 +16,8 @@ int main(int , char **) {
     float DeltaTime;
 
     Window window(width, height);
-    Player player;
-    player.objectTexture = IMG_LoadTexture(window.renderer, "../data/ShipsPNG/ship0.png"); // Todo this and one below move to some Texture Management class
-    SDL_QueryTexture(player.objectTexture, NULL, NULL, &player.textureWidth, &player.textureHeight);
+    Player player(&window);
+
 
     window.gameObjectsVector.push_back(&player);
     Uint32 lastFrameTime = SDL_GetTicks();

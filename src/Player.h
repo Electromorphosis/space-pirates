@@ -8,7 +8,7 @@
 
 class Player : public GameObject {
 public:
-    Player();
+    Player(Window* _window);
     int textureWidth = 32;
     int textureHeight = 32;
     float positionX = 0;
