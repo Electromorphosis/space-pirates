@@ -10,7 +10,7 @@ class Window;
 
 class GameObject {
 public:
-    Window* window = nullptr;
+    Window* window;
     SDL_Texture* objectTexture = nullptr;
     int textureWidth;
     int textureHeight;
