@@ -19,6 +19,7 @@ public:
     int renderPosX;
     int renderPosY;
     virtual void Render(Window& renderer) = 0;
+    int ttl;
 };
 
 

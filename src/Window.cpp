@@ -3,6 +3,8 @@
 //
 
 #include "Window.h"
+#include <algorithm>
+//#include "Particle.h"
 
 Window::Window(int windowWidth, int windowHeight) {
     Width = windowWidth;
@@ -30,7 +32,27 @@ void Window::RenderAll() {
         }
     }
 
+
+    for (const auto& gameObject : particleEffectsVector) {
+        if (gameObject) {
+            gameObject->Render(*this); // Dereference after null check
+        }
+    }
+
     player->Render(*this);
 
     SDL_RenderPresent(renderer); // draw frame to screen
+}
+
+void Window::TidyParticles() {
+    particleEffectsVector.erase(
+            std::remove_if(
+                    particleEffectsVector.begin(),
+                    particleEffectsVector.end(),
+                    [](const std::unique_ptr<GameObject>& p) { // Capture by const reference
+                        return p->ttl <= 0; // put your condition here
+                    }
+            ),
+            particleEffectsVector.end()
+    );
 }
