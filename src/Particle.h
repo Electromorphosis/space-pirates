@@ -5,12 +5,13 @@
 #ifndef SPACE_PIRATES_PARTICLE_H
 #define SPACE_PIRATES_PARTICLE_H
 #include "GameObject.h"
+#include "Window.h"
 #include <string>
 
 class Particle : public GameObject {
 public:
     Particle(Window* _window);
-    Particle(Window* _window, float posX, float posY, int dispersionRate, std::string spawn);
+    Particle(Window* _window, float posX, float posY, int dispersionRate, std::string spawn, bool randCol);
     ~Particle();
     Window* window;
     int textureWidth = 2;

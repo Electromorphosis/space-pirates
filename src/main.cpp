@@ -15,7 +15,7 @@ int main(int , char **) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrPartGen(0, 3);
-
+    bool playerAccel = false;
   const int width = 500;
   const int height = 500;
     float DeltaTime;
@@ -53,29 +53,46 @@ Player* player = new Player(&window);
     }
 
       const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
-
+playerAccel = false;
 // Todo: Add velocity vector which is applied at the end of the scan, so that <<possibly>> it will work for multi-key combos
       if (keyboardState[SDL_SCANCODE_W]) {
           player->velocity += 0.1;
+          playerAccel = true;
       }
       if (keyboardState[SDL_SCANCODE_S]) {
           player->velocity -= 0.1;
+          playerAccel = true;
       }
       if (keyboardState[SDL_SCANCODE_A]) {
           player->angle-=1;
       }
       if (keyboardState[SDL_SCANCODE_D]) {
           player->angle+=1;
+
       }
+
 //        SDL_Log("Velocity: %f", player.velocity);
 //      SDL_Log("Angle: %i*", player.angle);
       if (player->velocity < -0.5) player->velocity = -0.5;
-      if (player->velocity > 1) player->velocity = 1;
-
-      int partRoll = distrPartGen(gen);
-      if (player->velocity != 0 && partRoll == 1) { window.gameObjectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 10,  "random"));
-        SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
+      if (player->velocity > 1) {
+          player->velocity = 1;
+//          playerAccel = false;
       }
+
+
+      // Particle effects
+      if (playerAccel) {
+
+          int partRoll = distrPartGen(gen);
+          if (player->velocity != 0 && partRoll == 1) {
+              window.particleEffectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 10,  "random", true));
+    //        SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
+          } else {
+              window.particleEffectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 10,  "random", false));
+          }
+
+      }
+
       std::vector<float> newMovementVector = movementUtility->calculate(player->angle);
 //      SDL_Log("%f, %f", newMovementVector.at(0), newMovementVector.at(1));
       player->positionX += newMovementVector.at(0) * player->velocity;

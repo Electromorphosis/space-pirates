@@ -8,6 +8,7 @@
 #include <SDL2/SDL_image.h>
 #include <vector>
 #include "GameObject.h"
+//#include "Particle.h"
 #include <memory>
 
 class GameObject;
@@ -22,9 +23,11 @@ public:
     SDL_Window* window;
     SDL_Renderer* renderer;
     std::vector<std::unique_ptr<GameObject>> gameObjectsVector;
+    std::vector<std::unique_ptr<GameObject>> particleEffectsVector;
     std::unique_ptr<GameObject> player;
 
     void RenderAll();
+    void TidyParticles();
 };
 
 
