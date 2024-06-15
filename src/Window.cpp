@@ -32,8 +32,15 @@ void Window::RenderAll() {
         }
     }
 
-
+    this->TidyParticles();
     for (const auto& gameObject : particleEffectsVector) {
+        if (gameObject) {
+            gameObject->Render(*this); // Dereference after null check
+        }
+    }
+
+    this->TidyProjectiles();
+    for (const auto& gameObject : projectilesVector) {
         if (gameObject) {
             gameObject->Render(*this); // Dereference after null check
         }
@@ -49,10 +56,26 @@ void Window::TidyParticles() {
             std::remove_if(
                     particleEffectsVector.begin(),
                     particleEffectsVector.end(),
-                    [](const std::unique_ptr<GameObject>& p) { // Capture by const reference
-                        return p->ttl <= 0; // put your condition here
+                    [](const std::unique_ptr<GameObject>& p) {
+                        return p->ttl < 0;
                     }
             ),
             particleEffectsVector.end()
     );
+}
+
+void Window::TidyProjectiles() {
+    // SDL_Log("Vector length pre-tidying: %zu", projectilesVector.size());
+    projectilesVector.erase(
+            std::remove_if(
+                    projectilesVector.begin(),
+                    projectilesVector.end(),
+                    [this](const std::unique_ptr<GameObject>& p) {
+                        return p->positionX <= -(static_cast<float>(Width)) || p->positionX >= (static_cast<float>(Width) * 1.5) ||
+                               p->positionY <= -(static_cast<float>(Height)) || p->positionY >= (static_cast<float>(Height) * 1.5);
+                    }
+            ),
+            projectilesVector.end()
+    );
+    // SDL_Log("Vector length post-tidying: %zu", projectilesVector.size());
 }

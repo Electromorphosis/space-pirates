@@ -36,7 +36,7 @@ Particle::Particle(Window* _window, float posX, float posY, int dispersionRate, 
         positionY = static_cast<float>(renderPosY);
         std::uniform_int_distribution<> distrAngle(0, 360);
         angle = distrAngle(gen);
-        std::uniform_int_distribution<> distrTtl(10, 100);
+        std::uniform_int_distribution<> distrTtl(50, 100);
         ttl = distrTtl(gen);
         if (randCol) {
             std::uniform_int_distribution<> distrTexMod(50, 250);
@@ -56,7 +56,7 @@ if (ttl > 0) {
     this->ttl -= 1;
 //    return;
 } else if (ttl == 0) {
-    SDL_Log("Particle expired");
+//    SDL_Log("Particle expired");
     return;
 }
 
