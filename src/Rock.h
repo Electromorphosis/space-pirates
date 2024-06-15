@@ -6,18 +6,20 @@
 #define SPACE_PIRATES_ROCK_H
 #include "GameObject.h"
 #include <string>
+#include "CollisionBox.h"
+#include "CollisionType.h"
 
 class Rock : public GameObject {
 public:
     Rock(Window* _window);
     Rock(Window* _window, std::string spawn);
     Window* window;
-    int textureWidth = 32;
-    int textureHeight = 32;
-    float positionX = 0;
-    float positionY = 0;
+    int textureWidth;
+    int textureHeight;
+    float positionX;
+    float positionY;
     int angle = 0;
-
+    CollisionBox collisionBox = CollisionBox(nullptr, 0, 0, 0, 0, CollisionType::FriendlyProjectile);
     void Render(Window &renderer) override;
 };
 

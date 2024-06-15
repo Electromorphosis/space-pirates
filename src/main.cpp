@@ -122,13 +122,13 @@ playerAccel = false;
           if (projectile) {
               std::vector<float> projectileNewMovementVector = movementUtility->calculate(projectile->angle);
 //              SDL_Log("Vector calculated: { %f, %f }", projectileNewMovementVector.at(0), projectileNewMovementVector.at(1));
-              SDL_Log("Projectile coordinates before re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
+//              SDL_Log("Projectile coordinates before re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
 
               projectile->positionX += projectileNewMovementVector.at(0) * 5;
               projectile->positionY -= projectileNewMovementVector.at(1) * 5;
               projectile->renderPosX = static_cast<int>(projectile->positionX);
               projectile->renderPosY = static_cast<int>(projectile->positionY);
-              SDL_Log("Projectile coordinates after re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
+//              SDL_Log("Projectile coordinates after re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
           }
       }
 
