@@ -42,7 +42,8 @@ Player* player = new Player(&window);
     Uint32 lastFrameTime = SDL_GetTicks();
 
     const Uint32 MS_PER_FRAME = 1000 / 60; // Limit FPS do 60
-
+    const Uint32 SHOOT_COOLDOWN_MS = 1000;
+    Uint32 lastShootTime = 0;
 
 
   for (bool game_active = true; game_active;) {
@@ -52,6 +53,7 @@ Player* player = new Player(&window);
     while (SDL_PollEvent(&event)) { // check if there are some events
       if (event.type == SDL_QUIT)
         game_active = false;
+
     }
 
       const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
@@ -72,9 +74,14 @@ playerAccel = false;
           player->angle+=1;
 
       }
-      if (keyboardState[SDL_SCANCODE_SPACE]) {
+      if (keyboardState[SDL_SCANCODE_SPACE] && lastFrameTime - lastShootTime >= SHOOT_COOLDOWN_MS) {
           playerShoots = true;
+          lastShootTime = lastFrameTime; // Update the last shoot time
       }
+//
+//      if (event.type == SDL_KEYDOWN && keyboardState[SDL_SCANCODE_SPACE]) {
+//          playerShoots = true;
+//      }
 
 //        SDL_Log("Velocity: %f", player.velocity);
 //      SDL_Log("Angle: %i*", player.angle);

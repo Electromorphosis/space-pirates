@@ -31,13 +31,13 @@ return false;
 }
 
 void CollisionBox::Render(Window& renderWindow) {
-//    if(color == "blue") {
-//        SDL_SetRenderDrawColor(renderWindow.renderer, 0, 0, 255, 255);
-//    } else {
+    if(boxCollisionType == CollisionType::TerrainDestructible) {
         SDL_SetRenderDrawColor(renderWindow.renderer, 0, 255, 0, 255);
-//    }
+    } else if(boxCollisionType == CollisionType::FriendlyProjectile) {
+        SDL_SetRenderDrawColor(renderWindow.renderer, 255, 0, 0, 255);
+    }
 
-    SDL_Log("Render pos: %i, %i ; width: %i, height: %i", renderPosX, renderPosY, width, height);
+//    SDL_Log("Render pos: %i, %i ; width: %i, height: %i", renderPosX, renderPosY, width, height);
     SDL_Rect rect = { renderPosX, renderPosY, width, height }; // x, y, width, height
 
     // Draw the outline of the rectangle using horizontal and vertical lines
