@@ -19,7 +19,9 @@ Rock::Rock(Window* _window) {
 Rock::Rock(Window* _window, std::string spawn) {
     std::random_device rd;
     std::mt19937 gen(rd());
-//    while(abs(renderPosX-250) < 50 || abs(renderPosY-250) < 50  ) {
+    renderPosX = 250;
+    renderPosY = 250;
+    while(abs(renderPosX-250) < 30 && abs(renderPosY-250) < 30  ) {
         if (spawn == "random") {
             std::uniform_int_distribution<> distr(0, 500 -
                                                      textureHeight); // Todo: dynamic for width/height, though that might not be needed for now.
@@ -28,7 +30,7 @@ Rock::Rock(Window* _window, std::string spawn) {
             std::uniform_int_distribution<> distr2(0, 360);
             angle = distr2(gen);
         }
-//    }
+    }
     window = _window;
     objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/rock.png");
     SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
