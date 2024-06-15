@@ -16,18 +16,20 @@ class GameObject;
 class Window {
 public:
     Window(int windowWidth, int windowHeight);
-    int Width;
-    int Height;
+    int Width = 0;
+    int Height = 0;
     ~Window();
 
     SDL_Window* window;
     SDL_Renderer* renderer;
-    std::vector<std::unique_ptr<GameObject>> gameObjectsVector;
-    std::vector<std::unique_ptr<GameObject>> particleEffectsVector;
+    std::vector<std::unique_ptr<GameObject>> gameObjectsVector; // "Entities" such as rocks
+    std::vector<std::unique_ptr<GameObject>> projectilesVector; // Laser beams
+    std::vector<std::unique_ptr<GameObject>> particleEffectsVector; // Small VFXs
     std::unique_ptr<GameObject> player;
 
     void RenderAll();
     void TidyParticles();
+    void TidyProjectiles();
 };
 
 

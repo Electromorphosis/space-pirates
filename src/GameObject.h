@@ -20,6 +20,7 @@ public:
     int renderPosY;
     virtual void Render(Window& renderer) = 0;
     int ttl;
+    int angle;
 };
 
 
