@@ -5,9 +5,7 @@
 #include "LaserBeam.h"
 #include "CollisionBox.h"
 
-LaserBeam::LaserBeam(Window *_window, float posX, float posY, int initAngle)
-: collisionBox(window, positionX+3, positionY, 3, textureHeight, CollisionType::FriendlyProjectile)
-{
+LaserBeam::LaserBeam(Window *_window, float posX, float posY, int initAngle) {
     window = _window;
     objectTexture = IMG_LoadTexture(window->renderer, "../data/blueLaser.png");
     SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
@@ -17,6 +15,11 @@ LaserBeam::LaserBeam(Window *_window, float posX, float posY, int initAngle)
     renderPosY = static_cast<int>(positionY);
     angle = initAngle;
 //    SDL_Log("Laser beam created at %f, %f {render: %d, %d }", positionX, positionY, renderPosX, renderPosY);
+    collisionBox = CollisionBox(window, positionX, positionY, 5, textureHeight, CollisionType::FriendlyProjectile);
+    if(collisionBox.boxCollisionType == CollisionType::FriendlyProjectile) {
+//        SDL_Log("Box created at: %f, %f", positionX, positionY);
+    }
+
 }
 
 
@@ -28,7 +31,7 @@ void LaserBeam::Render(Window &window) {
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
 
     // Debug - render collision box
-//    collisionBox.Render(window);
+    collisionBox.Render(window);
 }
 
 LaserBeam::~LaserBeam() {

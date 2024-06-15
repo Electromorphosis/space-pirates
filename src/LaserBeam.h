@@ -17,7 +17,7 @@ public:
     int textureHeight = 9;
 
     void Render(Window &renderer) override;
-    CollisionBox collisionBox;
+    CollisionBox collisionBox = CollisionBox(nullptr, 0, 0, 0, 0, CollisionType::FriendlyProjectile);
 
 };
 
