@@ -5,6 +5,8 @@
 #ifndef SPACE_PIRATES_LASERBEAM_H
 #define SPACE_PIRATES_LASERBEAM_H
 #include "GameObject.h"
+#include "CollisionBox.h"
+#include "CollisionType.h"
 
 class LaserBeam : public GameObject {
 public:
@@ -15,7 +17,7 @@ public:
     int textureHeight = 9;
 
     void Render(Window &renderer) override;
-
+    CollisionBox collisionBox;
 
 };
 

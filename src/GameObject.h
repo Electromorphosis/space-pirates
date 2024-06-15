@@ -21,6 +21,7 @@ public:
     virtual void Render(Window& renderer) = 0;
     int ttl;
     int angle;
+    int hp;
 };
 
 
