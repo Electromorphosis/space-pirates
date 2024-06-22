@@ -62,7 +62,7 @@ if (ttl > 0) {
 
     SDL_Rect dstRect = { renderPosX, renderPosY, 2, 2 };
     SDL_Rect srcRect = { 0 , 0, 2, 2 };;
-    SDL_RendererFlip flip;
+    SDL_RendererFlip flip = SDL_RendererFlip();
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
 
 //    // Debug red dot

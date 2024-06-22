@@ -20,7 +20,7 @@ void Player::Render(Window &window) {
     UpdateAnimState(window);
     SDL_Rect dstRect = {renderPosX, renderPosY, 32, 32};
     SDL_Rect srcRect = {0, 0, 32, 32};;
-    SDL_RendererFlip flip;
+    SDL_RendererFlip flip = SDL_RendererFlip();
 ////    SDL_Log("test");
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
 }
@@ -29,7 +29,6 @@ void Player::Render(Window &window) {
 void Player::UpdateAnimState(Window &renderer) {
 
 // Modulo calc on sprites dependd on the length of a given animation
-    SDL_Log("%i", frameCounter);
     switch (currentAnimationState) {
         case IDLE: // Always only one frame on idle
             objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/ship0.png");

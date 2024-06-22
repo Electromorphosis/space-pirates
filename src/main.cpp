@@ -1,9 +1,10 @@
 #include <SDL2/SDL.h>
 #include <vector>
+#include "Window.h"
 #include "MovementUtility.h"
 #include "Player.h"
 #include "Rock.h"
-#include "Window.h"
+
 #include "Particle.h"
 #include "LaserBeam.h"
 #include <memory>

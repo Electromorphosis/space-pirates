@@ -31,12 +31,11 @@ void LaserBeam::Render(Window &window) {
 //    SDL_Log("Laser beam rendered at %f, %f {render: %i, %i }", positionX, positionY, renderPosX, renderPosY);
     SDL_Rect dstRect = { renderPosX, renderPosY, textureWidth, textureHeight };
     SDL_Rect srcRect = { 0 , 0, textureWidth, textureHeight };;
-    SDL_RendererFlip flip;
+    SDL_RendererFlip flip = SDL_RendererFlip();
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
 
     // Debug - render collision box
-    collisionBox.positionX = positionX;
-    collisionBox.positionY = positionY;
+    updateCollisionBox();
     collisionBox.Render(window);
 }
 
@@ -46,8 +45,10 @@ LaserBeam::~LaserBeam() {
 //void LaserBeam::UpdateCollision() {
 //}
 
-void LaserBeam::CheckCollision(CollisionBox &otherCollisionable) {
-    if (otherCollisionable.boxCollisionType == CollisionType::TerrainDestructible) {
-        otherCollisionable.damageDealt = true;
-    }
+void LaserBeam::CheckCollision(CollisionType ct) {
+
+}
+
+void LaserBeam::updateCollisionBox() {
+    collisionBox.UpdatePosition(positionX, positionY);
 }

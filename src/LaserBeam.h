@@ -18,7 +18,8 @@ public:
 
     void Render(Window &renderer) override;
     CollisionBox collisionBox = CollisionBox(nullptr, 0, 0, 0, 0, CollisionType::FriendlyProjectile);
-    void CheckCollision(CollisionBox &otherCollisionable);
+    void updateCollisionBox();
+    void CheckCollision(CollisionType ct);
 };
 
 
