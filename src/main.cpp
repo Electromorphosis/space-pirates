@@ -17,10 +17,11 @@ int main(int , char **) {
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrPartGen(0, 3);
     bool playerAccel = false;
-    bool playerShoots = false;
+    bool spawnPlayerLaser = false;
+    int ANIM_DELAY = 5; // How often should animation state tick relative to the main framerate; AKA lazy animator relief
+    int ANIM_COUNTER = 0;
   const int width = 500;
   const int height = 500;
-    float DeltaTime;
 
     Window window(width, height);
 
@@ -60,7 +61,7 @@ Player* player = new Player(&window);
 playerAccel = false;
 // Todo: Add velocity vector which is applied at the end of the scan, so that <<possibly>> it will work for multi-key combos
 
-    player->currentAnimationState = Player::IDLE;
+//    player->currentAnimationState = Player::IDLE;
 
     if (keyboardState[SDL_SCANCODE_W]) {
         player->velocity += 0.1;
@@ -82,9 +83,10 @@ playerAccel = false;
     }
 
     if (keyboardState[SDL_SCANCODE_SPACE] && lastFrameTime - lastShootTime >= SHOOT_COOLDOWN_MS) {
-        playerShoots = true;
+        player->isShooting = true;
         lastShootTime = lastFrameTime; // Update the last shoot time
         player->currentAnimationState = Player::SHOOT;
+        spawnPlayerLaser = true;
     }
 //
 //      if (event.type == SDL_KEYDOWN && keyboardState[SDL_SCANCODE_SPACE]) {
@@ -127,12 +129,12 @@ playerAccel = false;
 //      window.projectilesVector.push_back(std::make_unique<LaserBeam>(&window, player->positionX, player->positionY, player->angle));
 
 
-    if(playerShoots) {
+    if(spawnPlayerLaser) {
         window.projectilesVector.push_back(std::make_unique<LaserBeam>(&window, player->positionX, player->positionY, player->angle));
 //        SDL_Log("Player coordinates (float): {%f, %f}", player->positionX, player->positionY);
-
+    spawnPlayerLaser = false;
     }
-    playerShoots = false;
+
     for (auto& projectile : window.projectilesVector) {
         if (projectile) {
             std::vector<float> projectileNewMovementVector = movementUtility->calculate(projectile->angle);
@@ -152,6 +154,11 @@ playerAccel = false;
     window.RenderAll();
     Uint32 currentFrameTime = SDL_GetTicks();
     Uint32 elapsedTime = currentFrameTime - lastFrameTime;
+    ANIM_COUNTER++;
+    if(ANIM_COUNTER == ANIM_DELAY) {
+        ANIM_COUNTER = 0;
+        player->frameCounter++;
+    }
 
     if (elapsedTime < MS_PER_FRAME) {
         SDL_Delay(MS_PER_FRAME - elapsedTime);
@@ -159,7 +166,6 @@ playerAccel = false;
 
     lastFrameTime = SDL_GetTicks();
 
-    DeltaTime = ((elapsedTime) / 1000.0f) + 0.001f;
 
 
   }
