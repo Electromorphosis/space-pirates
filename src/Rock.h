@@ -22,6 +22,7 @@ public:
     int angle = 0;
     CollisionBox collisionBox = CollisionBox(nullptr, 0, 0, 0, 0, CollisionType::TerrainDestructible);
     void Render(Window &renderer) override;
+    void Damage() override;
 };
 
 

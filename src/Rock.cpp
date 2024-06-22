@@ -45,15 +45,18 @@ Rock::Rock(Window* _window, std::string spawn) {
 }
 
 Rock::~Rock() {
-
+    delete objectTexture;
+    delete window;
 }
 
 void Rock::Render(Window &window) {
-    if (hp <= 0) {
+    if (hp == 0) {
         objectTexture = IMG_LoadTexture(window.renderer, "../data/ShipsPNG/boom.png");
         ttl = 5;
+        hp--;
     }
     if (ttl > 0) {
+        SDL_Log("Rock TTL = %i", ttl);
         ttl--;
     } else if (ttl == 0) {
         delete this;
@@ -67,4 +70,8 @@ void Rock::Render(Window &window) {
 
     // debug - render collision box
     collisionBox.Render(window);
+}
+
+void Rock::Damage() {
+    hp--;
 }

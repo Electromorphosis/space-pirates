@@ -29,6 +29,7 @@ public:
     void RenderAll();
     void TidyParticles();
     void TidyProjectiles();
+    void TidyGameObjects();
     void CheckAllCollisions();
 
     bool checkIfTwoObjectsCollide(const std::unique_ptr<GameObject>& object1, const std::unique_ptr<GameObject>& object2);

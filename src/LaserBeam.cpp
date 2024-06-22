@@ -58,3 +58,7 @@ void LaserBeam::CheckCollision(CollisionType ct) {
 void LaserBeam::updateCollisionBox() {
     collisionBox.UpdatePosition(positionX, positionY);
 }
+
+void LaserBeam::Damage() {
+    hp--;
+}
