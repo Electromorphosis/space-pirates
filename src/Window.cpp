@@ -26,6 +26,7 @@ void Window::RenderAll() {
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 
+    this->TidyGameObjects();
     for (const auto& gameObject : gameObjectsVector) {
         if (gameObject) {
             gameObject->Render(*this); // Dereference after null check
@@ -68,6 +69,7 @@ void Window::TidyParticles() {
 
 void Window::TidyProjectiles() {
     // SDL_Log("Vector length pre-tidying: %zu", projectilesVector.size());
+    // Remove lasers too far away
     projectilesVector.erase(
             std::remove_if(
                     projectilesVector.begin(),
@@ -80,6 +82,18 @@ void Window::TidyProjectiles() {
             projectilesVector.end()
     );
     // SDL_Log("Vector length post-tidying: %zu", projectilesVector.size());
+
+    // Remove lasers that hit the target
+    projectilesVector.erase(
+            std::remove_if(
+                    projectilesVector.begin(),
+                    projectilesVector.end(),
+                    [this](const std::unique_ptr<GameObject>& p) {
+                        return p-> hp < 0;
+                    }
+            ),
+            projectilesVector.end()
+    );
 }
 
 void Window::CheckAllCollisions() {
@@ -91,8 +105,8 @@ void Window::CheckAllCollisions() {
                     bool collision = checkIfTwoObjectsCollide(projectile, gameObject);
                     if (collision) {
                         SDL_Log("Collision!");
-//                        gameObject->Damage();
-//                        projectile->Damage();
+                        gameObject->Damage();
+                        projectile->Damage();
                     }
                 }
 
@@ -134,4 +148,33 @@ bool Window::checkIfTwoObjectsCollide(const std::unique_ptr<GameObject> &object1
                 o1_y < o2_y + o2_height &&
                 o1_y + o1_height > o2_y);
     };
+}
+
+void Window::TidyGameObjects() {
+    // SDL_Log("Vector length pre-tidying: %zu", projectilesVector.size());
+    // Remove lasers too far away
+    gameObjectsVector.erase(
+            std::remove_if(
+                    gameObjectsVector.begin(),
+                    gameObjectsVector.end(),
+                    [this](const std::unique_ptr<GameObject>& p) {
+                        return p->positionX <= -(static_cast<float>(Width)) || p->positionX >= (static_cast<float>(Width) * 1.5) ||
+                               p->positionY <= -(static_cast<float>(Height)) || p->positionY >= (static_cast<float>(Height) * 1.5);
+                    }
+            ),
+            gameObjectsVector.end()
+    );
+    // SDL_Log("Vector length post-tidying: %zu", projectilesVector.size());
+
+    // Remove lasers that hit the target
+    gameObjectsVector.erase(
+            std::remove_if(
+                    gameObjectsVector.begin(),
+                    gameObjectsVector.end(),
+                    [this](const std::unique_ptr<GameObject>& p) {
+                        return p-> hp < 0;
+                    }
+            ),
+            gameObjectsVector.end()
+    );
 }
