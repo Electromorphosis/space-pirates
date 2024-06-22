@@ -17,13 +17,17 @@ int main(int , char **) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrPartGen(0, 3);
+    std::uniform_int_distribution<> distrRockGen(0, 100);
     bool playerAccel = false;
     bool spawnPlayerLaser = false;
     int ANIM_DELAY = 5; // How often should animation state tick relative to the main framerate; AKA lazy animator relief
     int ANIM_COUNTER = 0;
   const int width = 500;
   const int height = 500;
-
+    std::uniform_int_distribution<> distrHeightGen(0, height);
+    std::uniform_int_distribution<> distrWidthGen(0, width);
+    std::uniform_int_distribution<> distrAngleGen(0, 180);
+    std::uniform_int_distribution<> distrFaceGen(0, 3); // 0 - up, 1 - right, 2 - down, 3 - left
     Window window(width, height);
 
 //Player player(&window);
@@ -36,16 +40,18 @@ Player* player = new Player(&window);
 //        Player* playerPtr = static_cast<Player*>(window.gameObjectsVector.at(0).get());
 ////        player = *playerPtr; // Dereference the pointer and assign to the reference
 //    }
-
-    for (int i = 0; i < 8; i++) {
-        window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, "random"));
-    }
+//
+//    for (int i = 0; i < 8; i++) {
+//        window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, "random"));
+//    }
 
     Uint32 lastFrameTime = SDL_GetTicks();
 
     const Uint32 MS_PER_FRAME = 1000 / 60; // Limit FPS do 60
     const Uint32 SHOOT_COOLDOWN_MS = 1000;
     Uint32 lastShootTime = 0;
+
+    window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, 0, 45, 250, "asteroid"));
 
 
   for (bool game_active = true; game_active;) {
@@ -149,6 +155,37 @@ playerAccel = false;
 //              SDL_Log("Projectile coordinates after re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
         }
     }
+
+      for (auto& gameObject : window.gameObjectsVector) {
+          if (gameObject && gameObject->movable) {
+              std::vector<float> gameObjectNewMovementVector = movementUtility->calculate(gameObject->angle);
+//            SDL_Log("Vector calculated: { %f, %f }", projectileNewMovementVector.at(0), projectileNewMovementVector.at(1));
+//              SDL_Log("Projectile coordinates before re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
+
+              gameObject->positionX += gameObjectNewMovementVector.at(0) * gameObject->velocity;
+              gameObject->positionY -= gameObjectNewMovementVector.at(1) * gameObject->velocity;
+              gameObject->renderPosX = static_cast<int>(gameObject->positionX);
+              gameObject->renderPosY = static_cast<int>(gameObject->positionY); //TODO: Move to GameObject::UpdatePostion() ?
+//              SDL_Log("Projectile coordinates after re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
+          }
+      }
+
+//      int rockSpawnRoll = distrRockGen(gen); // TODO: Create some kind of RandomnessUtility to handle def too much random vars in the main xd
+//      if (rockSpawnRoll == 10) {
+//          int face = distrFaceGen(gen);
+//          int angle = distrAngleGen(gen);
+//          int spawnPoint;
+//          if (face == 0 || face == 2) {
+//              spawnPoint = distrWidthGen(gen);
+//          } else {
+//              spawnPoint = distrHeightGen(gen);
+//          }
+//
+
+//                  window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, face, angle, spawnPoint, "asteroid"));
+
+//      }
+
 
 
     window.CheckAllCollisions();

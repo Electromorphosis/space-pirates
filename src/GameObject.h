@@ -24,6 +24,8 @@ public:
     int ttl;
     int angle;
     int hp;
+    bool movable = false;
+    int velocity = 0;
     std::string name = "None";
 };
 
