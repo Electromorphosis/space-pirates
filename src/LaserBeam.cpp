@@ -15,7 +15,11 @@ LaserBeam::LaserBeam(Window *_window, float posX, float posY, int initAngle) {
     renderPosY = static_cast<int>(positionY);
     angle = initAngle;
 //    SDL_Log("Laser beam created at %f, %f {render: %d, %d }", positionX, positionY, renderPosX, renderPosY);
-    collisionBox = CollisionBox(window, positionX, positionY, 5, textureHeight, CollisionType::FriendlyProjectile);
+if (angle > 315 && angle <= 45 || angle > 135 && angle <= 225 ) {
+    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::FriendlyProjectile);
+} else {
+    collisionBox = CollisionBox(window, positionX, positionY, textureHeight, textureWidth, CollisionType::FriendlyProjectile);
+}
     if(collisionBox.boxCollisionType == CollisionType::FriendlyProjectile) {
 //        SDL_Log("Box created at: %f, %f", positionX, positionY);
     }
@@ -31,8 +35,19 @@ void LaserBeam::Render(Window &window) {
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
 
     // Debug - render collision box
-//    collisionBox.Render(window);
+    collisionBox.positionX = positionX;
+    collisionBox.positionY = positionY;
+    collisionBox.Render(window);
 }
 
 LaserBeam::~LaserBeam() {
+}
+//
+//void LaserBeam::UpdateCollision() {
+//}
+
+void LaserBeam::CheckCollision(CollisionBox &otherCollisionable) {
+    if (otherCollisionable.boxCollisionType == CollisionType::TerrainDestructible) {
+        otherCollisionable.damageDealt = true;
+    }
 }

@@ -13,6 +13,7 @@ class Rock : public GameObject {
 public:
     Rock(Window* _window);
     Rock(Window* _window, std::string spawn);
+    ~Rock();
     Window* window;
     int textureWidth;
     int textureHeight;

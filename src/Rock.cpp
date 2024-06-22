@@ -42,8 +42,15 @@ Rock::Rock(Window* _window, std::string spawn) {
 
 }
 
-void Rock::Render(Window &window) {
+Rock::~Rock() {
 
+}
+
+void Rock::Render(Window &window) {
+    if (collisionBox.damageDealt) {
+        delete this;
+        return;
+    }
     SDL_Rect dstRect = { renderPosX, renderPosY, 32, 32 };
     SDL_Rect srcRect = { 0 , 0, 32, 32 };;
     SDL_RendererFlip flip;
