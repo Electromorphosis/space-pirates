@@ -59,25 +59,33 @@ Player* player = new Player(&window);
       const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
 playerAccel = false;
 // Todo: Add velocity vector which is applied at the end of the scan, so that <<possibly>> it will work for multi-key combos
-      if (keyboardState[SDL_SCANCODE_W]) {
-          player->velocity += 0.1;
-          playerAccel = true;
-      }
-      if (keyboardState[SDL_SCANCODE_S]) {
-          player->velocity -= 0.1;
-          playerAccel = true;
-      }
-      if (keyboardState[SDL_SCANCODE_A]) {
-          player->angle-=1;
-      }
-      if (keyboardState[SDL_SCANCODE_D]) {
-          player->angle+=1;
 
-      }
-      if (keyboardState[SDL_SCANCODE_SPACE] && lastFrameTime - lastShootTime >= SHOOT_COOLDOWN_MS) {
-          playerShoots = true;
-          lastShootTime = lastFrameTime; // Update the last shoot time
-      }
+    player->currentAnimationState = Player::IDLE;
+
+    if (keyboardState[SDL_SCANCODE_W]) {
+        player->velocity += 0.1;
+        playerAccel = true;
+        player->currentAnimationState = Player::FORWARD;
+    }
+    if (keyboardState[SDL_SCANCODE_S]) {
+        player->velocity -= 0.1;
+        playerAccel = true;
+        player->currentAnimationState = Player::BACKWARDS;
+    }
+    if (keyboardState[SDL_SCANCODE_A]) {
+        player->angle-=1;
+        player->currentAnimationState = Player::COUNTER_TURN;
+    }
+    if (keyboardState[SDL_SCANCODE_D]) {
+        player->angle+=1;
+        player->currentAnimationState = Player::CLOCKWISE_TURN;
+    }
+
+    if (keyboardState[SDL_SCANCODE_SPACE] && lastFrameTime - lastShootTime >= SHOOT_COOLDOWN_MS) {
+        playerShoots = true;
+        lastShootTime = lastFrameTime; // Update the last shoot time
+        player->currentAnimationState = Player::SHOOT;
+    }
 //
 //      if (event.type == SDL_KEYDOWN && keyboardState[SDL_SCANCODE_SPACE]) {
 //          playerShoots = true;
@@ -85,73 +93,73 @@ playerAccel = false;
 
 //        SDL_Log("Velocity: %f", player.velocity);
 //      SDL_Log("Angle: %i*", player.angle);
-      if (player->velocity < -0.5) player->velocity = -0.5;
-      if (player->velocity > 1) {
-          player->velocity = 1;
-//          playerAccel = false;
-      }
+    if (player->velocity < -0.5) player->velocity = -0.5;
+    if (player->velocity > 1) {
+        player->velocity = 1;
+//        playerAccel = false;
+    }
 
 
       // Particle effects
-      if (playerAccel) {
+    if (playerAccel) {
 
-          int partRoll = distrPartGen(gen);
-          if (player->velocity != 0 && partRoll == 1) { // Some random colored particles, but most pale
-              window.particleEffectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 10,  "random", true));
-    //        SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
-          } else {
-              window.particleEffectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 10,  "random", false));
-          }
+        int partRoll = distrPartGen(gen);
+        if (player->velocity != 0 && partRoll == 1) { // Some random colored particles, but most pale
+            window.particleEffectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 10,  "random", true));
+    //      SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
+        } else {
+            window.particleEffectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 10,  "random", false));
+        }
 
-      }
+    }
 
 
       // Position update for movement objects
-      std::vector<float> newMovementVector = movementUtility->calculate(player->angle);
+    std::vector<float> newMovementVector = movementUtility->calculate(player->angle);
 //      SDL_Log("%f, %f", newMovementVector.at(0), newMovementVector.at(1));
-      player->positionX += newMovementVector.at(0) * player->velocity;
-      player->positionY -= newMovementVector.at(1) * player->velocity;
+    player->positionX += newMovementVector.at(0) * player->velocity;
+    player->positionY -= newMovementVector.at(1) * player->velocity;
 
-      player->renderPosX = static_cast<int>(player->positionX);
-      player->renderPosY = static_cast<int>(player->positionY);
+    player->renderPosX = static_cast<int>(player->positionX);
+    player->renderPosY = static_cast<int>(player->positionY);
 //      SDL_Log("Player coordinates (render): {%i, %i}", player->renderPosX, player->renderPosY);
 
 //      window.projectilesVector.push_back(std::make_unique<LaserBeam>(&window, player->positionX, player->positionY, player->angle));
 
 
-      if(playerShoots) {
-          window.projectilesVector.push_back(std::make_unique<LaserBeam>(&window, player->positionX, player->positionY, player->angle));
-//          SDL_Log("Player coordinates (float): {%f, %f}", player->positionX, player->positionY);
+    if(playerShoots) {
+        window.projectilesVector.push_back(std::make_unique<LaserBeam>(&window, player->positionX, player->positionY, player->angle));
+//        SDL_Log("Player coordinates (float): {%f, %f}", player->positionX, player->positionY);
 
-      }
-      playerShoots = false;
-      for (auto& projectile : window.projectilesVector) {
-          if (projectile) {
-              std::vector<float> projectileNewMovementVector = movementUtility->calculate(projectile->angle);
-//              SDL_Log("Vector calculated: { %f, %f }", projectileNewMovementVector.at(0), projectileNewMovementVector.at(1));
+    }
+    playerShoots = false;
+    for (auto& projectile : window.projectilesVector) {
+        if (projectile) {
+            std::vector<float> projectileNewMovementVector = movementUtility->calculate(projectile->angle);
+//            SDL_Log("Vector calculated: { %f, %f }", projectileNewMovementVector.at(0), projectileNewMovementVector.at(1));
 //              SDL_Log("Projectile coordinates before re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
 
-              projectile->positionX += projectileNewMovementVector.at(0) * 5;
-              projectile->positionY -= projectileNewMovementVector.at(1) * 5;
-              projectile->renderPosX = static_cast<int>(projectile->positionX);
-              projectile->renderPosY = static_cast<int>(projectile->positionY);
+            projectile->positionX += projectileNewMovementVector.at(0) * 5;
+            projectile->positionY -= projectileNewMovementVector.at(1) * 5;
+            projectile->renderPosX = static_cast<int>(projectile->positionX);
+            projectile->renderPosY = static_cast<int>(projectile->positionY);
 //              SDL_Log("Projectile coordinates after re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
-          }
-      }
+        }
+    }
 
 
 
-        window.RenderAll();
-      Uint32 currentFrameTime = SDL_GetTicks();
-      Uint32 elapsedTime = currentFrameTime - lastFrameTime;
+    window.RenderAll();
+    Uint32 currentFrameTime = SDL_GetTicks();
+    Uint32 elapsedTime = currentFrameTime - lastFrameTime;
 
-      if (elapsedTime < MS_PER_FRAME) {
-          SDL_Delay(MS_PER_FRAME - elapsedTime);
-      }
+    if (elapsedTime < MS_PER_FRAME) {
+        SDL_Delay(MS_PER_FRAME - elapsedTime);
+    }
 
-      lastFrameTime = SDL_GetTicks();
+    lastFrameTime = SDL_GetTicks();
 
-      DeltaTime = ((elapsedTime) / 1000.0f) + 0.001f;
+    DeltaTime = ((elapsedTime) / 1000.0f) + 0.001f;
 
 
   }
