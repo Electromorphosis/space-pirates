@@ -28,9 +28,9 @@ public:
     float velocity = 0;
     int angle = 0;
     int frameCounter = 0;
-
+    bool isShooting = false;
     void Render(Window &renderer) override;
-    void SetAnimState(Window &renderer);
+    void UpdateAnimState(Window &renderer);
 };
 
 

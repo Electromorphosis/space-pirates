@@ -32,13 +32,6 @@ void Window::RenderAll() {
         }
     }
 
-    this->TidyParticles();
-    for (const auto& gameObject : particleEffectsVector) {
-        if (gameObject) {
-            gameObject->Render(*this); // Dereference after null check
-        }
-    }
-
     this->TidyProjectiles();
     for (const auto& gameObject : projectilesVector) {
         if (gameObject) {
@@ -46,7 +39,16 @@ void Window::RenderAll() {
         }
     }
 
+    this->TidyParticles();
+    for (const auto& gameObject : particleEffectsVector) {
+        if (gameObject) {
+            gameObject->Render(*this); // Dereference after null check
+        }
+    }
+
     player->Render(*this);
+
+
 
     SDL_RenderPresent(renderer); // draw frame to screen
 }
