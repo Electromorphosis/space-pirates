@@ -23,11 +23,17 @@ if (angle > 315 && angle <= 45 || angle > 135 && angle <= 225 ) {
     if(collisionBox.boxCollisionType == CollisionType::FriendlyProjectile) {
 //        SDL_Log("Box created at: %f, %f", positionX, positionY);
     }
+    hp = 0;
+    name = "laser";
 
 }
 
 
 void LaserBeam::Render(Window &window) {
+    if (hp < 0) {
+        delete this;
+        return;
+    }
 //    SDL_Log("Laser beam rendered at %f, %f {render: %i, %i }", positionX, positionY, renderPosX, renderPosY);
     SDL_Rect dstRect = { renderPosX, renderPosY, textureWidth, textureHeight };
     SDL_Rect srcRect = { 0 , 0, textureWidth, textureHeight };;

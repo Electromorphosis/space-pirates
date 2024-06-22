@@ -151,7 +151,7 @@ playerAccel = false;
     }
 
 
-
+    window.CheckAllCollisions();
     window.RenderAll();
     Uint32 currentFrameTime = SDL_GetTicks();
     Uint32 elapsedTime = currentFrameTime - lastFrameTime;
@@ -166,7 +166,6 @@ playerAccel = false;
     }
 
     lastFrameTime = SDL_GetTicks();
-
 
 
   }

@@ -9,6 +9,7 @@
 #include <cstdlib>
 
 Rock::Rock(Window* _window) {
+    // Please note that this is practically unused
     window = _window;
     collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
     objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/rock.png");
@@ -39,7 +40,8 @@ Rock::Rock(Window* _window, std::string spawn) {
     positionY = static_cast<int>(renderPosY);
     collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
     hp = 2;
-
+    ttl = -1;
+    name = "standard_sprite";
 }
 
 Rock::~Rock() {
@@ -47,10 +49,17 @@ Rock::~Rock() {
 }
 
 void Rock::Render(Window &window) {
-//    if (collisionBox.damageDealt) {
-//        delete this;
-//        return;
-//    }
+    if (hp <= 0) {
+        objectTexture = IMG_LoadTexture(window.renderer, "../data/ShipsPNG/boom.png");
+        ttl = 5;
+    }
+    if (ttl > 0) {
+        ttl--;
+    } else if (ttl == 0) {
+        delete this;
+        return;
+    }
+
     SDL_Rect dstRect = { renderPosX, renderPosY, 32, 32 };
     SDL_Rect srcRect = { 0 , 0, 32, 32 };;
     SDL_RendererFlip flip = SDL_RendererFlip();
