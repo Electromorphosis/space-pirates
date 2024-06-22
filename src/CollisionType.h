@@ -7,6 +7,7 @@
 
 
 enum class CollisionType {
+    None,
     TerrainDestructible,
     FriendlyProjectile,
     Player

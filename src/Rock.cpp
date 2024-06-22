@@ -47,13 +47,13 @@ Rock::~Rock() {
 }
 
 void Rock::Render(Window &window) {
-    if (collisionBox.damageDealt) {
-        delete this;
-        return;
-    }
+//    if (collisionBox.damageDealt) {
+//        delete this;
+//        return;
+//    }
     SDL_Rect dstRect = { renderPosX, renderPosY, 32, 32 };
     SDL_Rect srcRect = { 0 , 0, 32, 32 };;
-    SDL_RendererFlip flip;
+    SDL_RendererFlip flip = SDL_RendererFlip();
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
 
     // debug - render collision box
