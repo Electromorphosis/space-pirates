@@ -18,7 +18,7 @@ public:
     int height;
 
     void UpdatePosition(int newPosX, int newPosY);
-    bool CheckCollision(CollisionBox otherBox);
+    bool CheckCollision(const CollisionBox &otherBox);
 //    std::string color = "default";
 };
 

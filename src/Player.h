@@ -9,14 +9,28 @@
 class Player : public GameObject {
 public:
     Player(Window* _window);
+
+    enum PlayerAnimationStates {
+        IDLE,
+        FORWARD,
+        BACKWARDS,
+        CLOCKWISE_TURN,
+        COUNTER_TURN,
+        SHOOT,
+        DAMAGED,
+        DESTROY
+    };
+    PlayerAnimationStates currentAnimationState = IDLE;
     int textureWidth = 32;
     int textureHeight = 32;
     float positionX = 0;
     float positionY = 0;
     float velocity = 0;
     int angle = 0;
+    int frameCounter = 0;
 
     void Render(Window &renderer) override;
+    void SetAnimState(Window &renderer);
 };
 
 

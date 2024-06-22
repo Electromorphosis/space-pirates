@@ -31,7 +31,7 @@ void LaserBeam::Render(Window &window) {
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
 
     // Debug - render collision box
-    collisionBox.Render(window);
+//    collisionBox.Render(window);
 }
 
 LaserBeam::~LaserBeam() {

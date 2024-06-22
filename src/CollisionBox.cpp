@@ -22,7 +22,7 @@ void CollisionBox::UpdatePosition(int newPosX, int newPosY) {
 
 }
 
-bool CollisionBox::CheckCollision(CollisionBox otherBox) {
+bool CollisionBox::CheckCollision(const CollisionBox &secondBox) {
 //    return (a.x < b.x + b.width &&
 //            a.x + a.width > b.x &&
 //            a.y < b.y + b.height &&

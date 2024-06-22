@@ -17,14 +17,59 @@ Player::Player(Window* _window){
 }
 
 void Player::Render(Window &window) {
-
-//    SDL_Rect kwadrat = {renderPosX, renderPosY, 10, 10};
-//    SDL_RenderFillRect(renderer, &kwadrat);
-
-    SDL_Rect dstRect = { renderPosX, renderPosY, 32, 32 };
-    SDL_Rect srcRect = { 0 , 0, 32, 32 };;
+    switch (currentAnimationState) {
+        case IDLE:
+            objectTexture = IMG_LoadTexture(window.renderer, "../data/ShipsPNG/ship0.png");
+            break;
+        case SHOOT:
+            objectTexture = IMG_LoadTexture(window.renderer, "../data/ShipsPNG/shoot0.png");
+            break;
+        case FORWARD:
+            objectTexture = IMG_LoadTexture(window.renderer, "../data/ShipsPNG/fwd0.png");
+            break;
+        case BACKWARDS:
+            objectTexture = IMG_LoadTexture(window.renderer, "../data/ShipsPNG/back0.png");
+            break;
+        case CLOCKWISE_TURN:
+            objectTexture = IMG_LoadTexture(window.renderer, "../data/ShipsPNG/clock.png");
+            break;
+        case COUNTER_TURN:
+            objectTexture = IMG_LoadTexture(window.renderer, "../data/ShipsPNG/counter.png");
+            break;
+        case DESTROY:
+            break;
+//        case DAMAGED:
+//            break;
+        default:
+            break;
+    };
+    SDL_Rect dstRect = {renderPosX, renderPosY, 32, 32};
+    SDL_Rect srcRect = {0, 0, 32, 32};;
     SDL_RendererFlip flip;
-//    SDL_Log("test");
+////    SDL_Log("test");
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
-
 }
+
+
+//void Player::SetAnimState(Window &window) {
+//    switch(currentAnimationState) {
+//        case IDLE:
+//            break;
+//        case SHOOT:
+//            break;
+//        case FORWARD:
+//            break;
+//        case BACKWARDS:
+//            break;
+//        case CLOCKWISE_TURN:
+//            break;
+//        case COUNTER_TURN:
+//            break;
+//        case DESTROY:
+//            break;
+////        case DAMAGED:
+////            break;
+//        default:
+//            break;
+//
+//    }
