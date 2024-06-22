@@ -18,8 +18,11 @@ CollisionBox::CollisionBox(Window *_window, float posX, float posY, int initWidt
     boxCollisionType = ct;
 }
 
-void CollisionBox::UpdatePosition(int newPosX, int newPosY) {
-
+void CollisionBox::UpdatePosition(float newPosX, float newPosY) {
+    positionX = newPosX;
+    positionY = newPosY;
+    renderPosX = static_cast<int>(positionX);
+    renderPosY = static_cast<int>(positionY);
 }
 
 bool CollisionBox::CheckCollision(const CollisionBox &secondBox) {
