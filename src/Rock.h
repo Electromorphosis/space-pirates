@@ -15,8 +15,8 @@ public:
     Rock(Window* _window, std::string spawn);
     ~Rock();
     Window* window;
-    int textureWidth;
-    int textureHeight;
+    int textureWidth = 32;
+    int textureHeight = 32;
     float positionX;
     float positionY;
     int angle = 0;

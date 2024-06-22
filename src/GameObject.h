@@ -6,22 +6,25 @@
 #define SPACE_PIRATES_GAMEOBJECT_H
 #include "Window.h"
 #include <SDL2/SDL_image.h>
+#include <string>
 class Window;
 
 class GameObject {
 public:
     Window* window;
     SDL_Texture* objectTexture = nullptr;
-    int textureWidth;
-    int textureHeight;
+    int textureWidth = 0;
+    int textureHeight = 0;
     float positionX;
     float positionY;
-    int renderPosX;
-    int renderPosY;
-    virtual void Render(Window& renderer) = 0;
+    int renderPosX = 0;
+    int renderPosY = 0;
+    virtual void Render(Window& renderer);
+    virtual void Damage();
     int ttl;
     int angle;
     int hp;
+    std::string name = "None";
 };
 
 

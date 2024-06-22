@@ -19,7 +19,6 @@ public:
     int Width = 0;
     int Height = 0;
     ~Window();
-
     SDL_Window* window;
     SDL_Renderer* renderer;
     std::vector<std::unique_ptr<GameObject>> gameObjectsVector; // "Entities" such as rocks
@@ -30,6 +29,9 @@ public:
     void RenderAll();
     void TidyParticles();
     void TidyProjectiles();
+    void CheckAllCollisions();
+
+    bool checkIfTwoObjectsCollide(const std::unique_ptr<GameObject>& object1, const std::unique_ptr<GameObject>& object2);
 };
 
 

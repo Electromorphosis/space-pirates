@@ -25,13 +25,6 @@ void CollisionBox::UpdatePosition(float newPosX, float newPosY) {
     renderPosY = static_cast<int>(positionY);
 }
 
-bool CollisionBox::CheckCollision(const CollisionBox &secondBox) {
-//    return (a.x < b.x + b.width &&
-//            a.x + a.width > b.x &&
-//            a.y < b.y + b.height &&
-//            a.y + a.height > b.y);
-return false;
-}
 
 void CollisionBox::Render(Window& renderWindow) {
     if(boxCollisionType == CollisionType::TerrainDestructible) {
