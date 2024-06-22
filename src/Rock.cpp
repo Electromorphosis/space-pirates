@@ -62,7 +62,7 @@ void Rock::Render(Window &window) {
         delete this;
         return;
     }
-
+//    SDL_Log("x pos = %f, y pos = %f, x rend = %i, y rend = %i", positionX, positionY, renderPosX, renderPosY);
     SDL_Rect dstRect = { renderPosX, renderPosY, 32, 32 };
     SDL_Rect srcRect = { 0 , 0, 32, 32 };;
     SDL_RendererFlip flip = SDL_RendererFlip();
@@ -74,4 +74,53 @@ void Rock::Render(Window &window) {
 
 void Rock::Damage() {
     hp--;
+}
+
+Rock::Rock(Window *_window, int face, int initAngle, int spawnPoint, const std::string& spawn) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrVelocity(0, 5);
+    positionX = 0;
+    positionY = 0;
+
+    if (spawn == "asteroid") {
+        movable = true;
+        switch(face) {
+            case 0: // UP
+                positionX = static_cast<float>(spawnPoint);
+                positionY = static_cast<float>(150);
+                angle = -initAngle;
+                break;
+            case 1: // RIGHT
+                positionX = static_cast<float>(spawnPoint);
+                positionY = static_cast<float>(_window->Width + 50);
+                angle = initAngle + 180;
+                break;
+            case 2:
+                positionX = static_cast<float>(spawnPoint);
+                positionY = static_cast<float>(_window->Height + 50);
+                angle = initAngle;
+                break;
+            case 3:
+                positionX = -50;
+                positionY = static_cast<float>(spawnPoint);
+                angle = initAngle + 90;
+                break;
+            default:
+                return;
+        }
+        velocity = 2;
+//                distrVelocity(gen);
+    }
+    window = _window;
+    objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/rock.png");
+    SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
+    renderPosX = static_cast<int>(positionX);
+    renderPosY = static_cast<int>(positionY);
+    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
+    hp = 2;
+    ttl = -1;
+    name = "standard_sprite";
+    SDL_Log("Random rock spawned");
+
 }
