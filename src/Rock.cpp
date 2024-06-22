@@ -69,7 +69,7 @@ void Rock::Render(Window &window) {
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
 
     // debug - render collision box
-    collisionBox.Render(window);
+//    collisionBox.Render(window);
 }
 
 void Rock::Damage() {
