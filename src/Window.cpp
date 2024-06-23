@@ -8,7 +8,8 @@
 
 //#include "Particle.h"
 
-Window::Window(int windowWidth, int windowHeight) {
+Window::Window(GlobalEventHandler *_events, int windowWidth, int windowHeight) {
+    geh = _events;
     Width = windowWidth;
     Height = windowHeight;
     SDL_Init( SDL_INIT_EVERYTHING );
@@ -51,11 +52,7 @@ void Window::RenderAll() {
 
     player->Render(*this);
 
-    for (const auto& textBox : textBoxesVector) {
-        if (textBox) {
-            textBox->Render(*this); // Dereference after null check
-        }
-    }
+    scoreTextBox->Render(*this);
 
     SDL_RenderPresent(renderer); // draw frame to screen
 }
@@ -186,10 +183,5 @@ void Window::TidyGameObjects() {
 }
 
 void Window::UpdateScore() {
-//    for (const auto& gameObject : gameObjectsVector) {
-//        if (gameObject && gameObject->name.c_str() == "asteroid" && gameObject->hp == 0) {
-//            score++;
-//            SDL_Log("New score: %i", score);
-//        }
-//    }
+    scoreTextBox->content = "SCORE : " + std::to_string(geh->score);
 }

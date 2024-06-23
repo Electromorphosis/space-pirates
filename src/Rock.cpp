@@ -8,16 +8,18 @@
 #include <random>
 #include <cstdlib>
 
-Rock::Rock(Window* _window) {
+Rock::Rock(Window* _window, GlobalEventHandler* _events) {
     // Please note that this is practically unused
     window = _window;
+    geh = _events;
 //    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
     objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/rock.png");
     SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
 
 }
 
-Rock::Rock(Window* _window, std::string spawn) {
+Rock::Rock(Window* _window, GlobalEventHandler* _events, std::string spawn) {
+    geh = _events;
     std::random_device rd;
     std::mt19937 gen(rd());
     renderPosX = 250;
@@ -45,7 +47,7 @@ Rock::Rock(Window* _window, std::string spawn) {
 }
 
 Rock::~Rock() {
-
+SDL_Log("Rock removed");
     delete objectTexture;
     delete window;
 }
@@ -55,6 +57,7 @@ void Rock::Render(Window &window) {
         objectTexture = IMG_LoadTexture(window.renderer, "../data/ShipsPNG/boom.png");
         ttl = 5;
         hp--;
+        geh->score++;
     }
     if (ttl > 0) {
 //        SDL_Log("Rock TTL = %i", ttl);
@@ -80,10 +83,11 @@ void Rock::Damage() {
     hp--;
 }
 
-Rock::Rock(Window *_window, int face, int initAngle, int spawnPoint, const std::string& spawn) {
+Rock::Rock(Window *_window, GlobalEventHandler *_events, int face, int initAngle, int spawnPoint, const std::string& spawn) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrVelocity(0, 5);
+    geh = _events;
     positionX = 0;
     positionY = 0;
     renderPosX = 0;
@@ -128,7 +132,7 @@ Rock::Rock(Window *_window, int face, int initAngle, int spawnPoint, const std::
     renderPosY = static_cast<int>(positionY);
 //    SDL_Log("Starting coords (render/int): X= %i , Y=%i", renderPosX, renderPosY);
 //    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
-    hp = 2;
+    hp = 1;
     ttl = -1;
     name = "asteroid";
 //    SDL_Log("Random rock spawned. Face: %i Angle: %i Velocity: %i SpawnPos: %i ", face, initAngle, velocity, spawnPoint);
