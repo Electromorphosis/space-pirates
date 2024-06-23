@@ -11,23 +11,25 @@
 //#include "Particle.h"
 #include "TextBox.h"
 #include <memory>
+#include "GlobalEventHandler.h"
 
 class GameObject;
 class TextBox;
 
 class Window {
 public:
-    Window(int windowWidth, int windowHeight);
+    Window(GlobalEventHandler* _events, int windowWidth, int windowHeight);
     int Width = 0;
     int Height = 0;
     int score = 0;
     ~Window();
     SDL_Window* window;
     SDL_Renderer* renderer;
+    GlobalEventHandler* geh;
     std::vector<std::unique_ptr<GameObject>> gameObjectsVector; // "Entities" such as rocks
     std::vector<std::unique_ptr<GameObject>> projectilesVector; // Laser beams
     std::vector<std::unique_ptr<GameObject>> particleEffectsVector; // Small VFXs
-    std::vector<std::unique_ptr<TextBox>> textBoxesVector; // UI elements
+    std::unique_ptr<TextBox> scoreTextBox; // UI elements: player's score
     std::unique_ptr<GameObject> player;
 
     void RenderAll();

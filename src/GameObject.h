@@ -7,11 +7,13 @@
 #include "Window.h"
 #include <SDL2/SDL_image.h>
 #include <string>
+#include "GlobalEventHandler.h"
 class Window;
 
 class GameObject {
 public:
     Window* window;
+    GlobalEventHandler* geh;
     SDL_Texture* objectTexture = nullptr;
     int textureWidth = 0;
     int textureHeight = 0;

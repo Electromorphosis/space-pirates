@@ -10,11 +10,13 @@
 #include <memory>
 #include <random>
 #include <SDL2/SDL_ttf.h>
+#include "GlobalEventHandler.h"
 
 
 int main(int , char **) {
   using namespace std;
   MovementUtility* movementUtility = new MovementUtility();
+  GlobalEventHandler globalEventHandler(0);
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrPartGen(0, 3);
@@ -29,7 +31,7 @@ int main(int , char **) {
     std::uniform_int_distribution<> distrWidthGen(0, width);
     std::uniform_int_distribution<> distrAngleGen(0, 180);
     std::uniform_int_distribution<> distrFaceGen(0, 3); // 0 - up, 1 - right, 2 - down, 3 - left
-    Window window(width, height);
+    Window window(&globalEventHandler, width, height);
     //Initialize SDL_ttf
     if( TTF_Init() == -1 )
     {
@@ -50,7 +52,7 @@ Player* player = new Player(&window);
 //        window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, "random"));
 //    }
 std::string content = "SCORE : 0";
-window.textBoxesVector.push_back(std::make_unique<TextBox>(&window, 0, 0, 130, 24, content));
+window.scoreTextBox = std::make_unique<TextBox>(&window, 0, 0, 130, 24, content);
     Uint32 lastFrameTime = SDL_GetTicks();
 
     const Uint32 MS_PER_FRAME = 1000 / 60; // Limit FPS do 60
@@ -188,7 +190,7 @@ playerAccel = false;
           }
 
 
-                  window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, face, angle, spawnPoint, "asteroid"));
+                  window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, &globalEventHandler, face, angle, spawnPoint, "asteroid"));
 
       }
 
