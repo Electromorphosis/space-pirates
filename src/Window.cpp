@@ -130,7 +130,7 @@ bool Window::checkIfTwoObjectsCollide(const std::unique_ptr<GameObject> &object1
         if (object1->name == "laser") { // Turbo-shady but well xD
             o1_width = 9;
             o1_height = 9;
-        } else if (object1->name == "standard_sprite") {
+        } else if (object1->name == "asteroid") {
             o1_width = 32;
             o1_height = 32;
         }
@@ -141,7 +141,7 @@ bool Window::checkIfTwoObjectsCollide(const std::unique_ptr<GameObject> &object1
         if (object2->name == "laser") { // Turbo-shady but well xD
             o2_width = 9;
             o2_height = 9;
-        } else if (object2->name == "standard_sprite") {
+        } else if (object2->name == "asteroid") {
             o2_width = 32;
             o2_height = 32;
         }
@@ -172,7 +172,7 @@ void Window::TidyGameObjects() {
     );
     // SDL_Log("Vector length post-tidying: %zu", projectilesVector.size());
 
-    // Remove lasers that hit the target
+    // Remove GameObjects being hit the target
     gameObjectsVector.erase(
             std::remove_if(
                     gameObjectsVector.begin(),
@@ -183,4 +183,13 @@ void Window::TidyGameObjects() {
             ),
             gameObjectsVector.end()
     );
+}
+
+void Window::UpdateScore() {
+//    for (const auto& gameObject : gameObjectsVector) {
+//        if (gameObject && gameObject->name.c_str() == "asteroid" && gameObject->hp == 0) {
+//            score++;
+//            SDL_Log("New score: %i", score);
+//        }
+//    }
 }

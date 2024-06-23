@@ -171,7 +171,7 @@ playerAccel = false;
               gameObject->positionX += gameObjectNewMovementVector.at(0);
               gameObject->positionY -= gameObjectNewMovementVector.at(1);
               gameObject->renderPosX = static_cast<int>(gameObject->positionX);
-              gameObject->renderPosY = static_cast<int>(gameObject->positionY); //TODO: Move to GameObject::UpdatePostion() ?
+              gameObject->renderPosY = static_cast<int>(gameObject->positionY); //TODO: Move to GameObject::UpdatePosition() ?
 //              SDL_Log("GameObject coordinates after re-calculate (float): {%f, %f}; (int): {%i, %i}", gameObject->positionX, gameObject->positionY, gameObject->renderPosX, gameObject->renderPosY);
           }
       }
