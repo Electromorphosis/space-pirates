@@ -4,7 +4,14 @@
 
 ## Todo's
 UPDATE: The old version of this list is quite wishful XD I refactored it to make more sense in regards to the actual state of the game. that is fully playable demo devoid of much content.
+### KNOWN BUGS
+Those of course should be handled in the first place:
+- Rock explosion animation doesn't work when collided with the ship.
+- Sprites has no alpha channel so can occasionally overlap with black blobs.
+- Jet stream particle effect spawns in much less amount that it should.
+- Invisible menu higlights are in Leaderboards and Help.
 
+### PLANNED FEATURES
 **Should haves** - at least some of those would be really preferable to add soon*ish*:
 - damage cooldown!!!
 - clear code rubbish.
