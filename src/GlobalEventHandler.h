@@ -11,7 +11,9 @@ public:
     int score = 0;
     int difficulty;
     bool gameOn = true;
+    int gameOverTtl = 999;
     explicit GlobalEventHandler(int diffLevel);
+    void RestartEventsHandler();
 };
 
 

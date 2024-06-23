@@ -50,13 +50,16 @@ void Window::RenderAll() {
         }
     }
 
-    if (geh->gameOn) {
+    if (!renderMenu) {
         player->Render(*this);
+        scoreTextBox->Render(*this);
+        healthTextBox->Render(*this);
     }
 
+    if (renderMenu) {
+        RenderMenuHighlight();
+    }
 
-    scoreTextBox->Render(*this);
-    healthTextBox->Render(*this);
     for (const auto& textBox : textBoxesVector) {
         if (textBox) {
             textBox->Render(*this); // Dereference after null check
@@ -203,4 +206,55 @@ void Window::TidyGameObjects() {
 void Window::UpdateGui() {
     scoreTextBox->content = "SCORE : " + std::to_string(geh->score);
     healthTextBox->content = "HP : " + std::to_string(player->hp);
+}
+
+void Window::RenderMenuHighlight() {
+    SDL_Rect rect;
+switch(menuHighlight) {
+    case 0: // MAIN MENU
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        rect = { static_cast<int>(Width*0.30), static_cast<int>(Height*0.45), static_cast<int>(Width-(Width*0.6)), Height/9 };
+        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
+        SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
+        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
+        SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
+        break;
+    case 1: // LEADERBOARDS
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        rect = { static_cast<int>(Width*0.10), static_cast<int>(Height*0.55), static_cast<int>(Width-(Width*0.2)), Height/9 };
+        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
+        SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
+        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
+        SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
+        break;
+    case 2: // HELP
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        rect = { static_cast<int>(Width*0.35), static_cast<int>(Height*0.65), static_cast<int>(Width-(Width*0.7)), Height/9 };
+        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
+        SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
+        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
+        SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
+        break;
+    case 3: // QUIT
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        rect = { static_cast<int>(Width*0.35), static_cast<int>(Height*0.75), static_cast<int>(Width-(Width*0.7)), Height/9 };
+        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
+        SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
+        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
+        SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
+        break;
+    default:
+        break;
+}
+}
+
+void Window::RestartRenderer() {
+    gameObjectsVector.clear();
+    projectilesVector.clear();
+    particleEffectsVector.clear();
+    textBoxesVector.clear();
+    player = nullptr;
+    scoreTextBox = nullptr;
+    healthTextBox = nullptr;
+    SDL_RenderClear(renderer);
 }
