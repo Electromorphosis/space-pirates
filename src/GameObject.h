@@ -17,8 +17,8 @@ public:
     int textureHeight = 0;
     float positionX;
     float positionY;
-    int renderPosX = 0;
-    int renderPosY = 0;
+    int renderPosX;
+    int renderPosY;
     virtual void Render(Window& renderer);
     virtual void Damage();
     int ttl;

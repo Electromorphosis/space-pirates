@@ -104,7 +104,7 @@ void Window::CheckAllCollisions() {
                 if (gameObject) {
                     bool collision = checkIfTwoObjectsCollide(projectile, gameObject);
                     if (collision) {
-                        SDL_Log("Collision!");
+//                        SDL_Log("Collision!");
                         gameObject->Damage();
                         projectile->Damage();
                     }

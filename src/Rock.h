@@ -18,9 +18,6 @@ public:
     Window* window;
     int textureWidth = 32;
     int textureHeight = 32;
-    float positionX;
-    float positionY;
-    int angle = 0;
     CollisionBox collisionBox = CollisionBox(nullptr, 0, 0, 0, 0, CollisionType::TerrainDestructible);
     void Render(Window &renderer) override;
     void Damage() override;

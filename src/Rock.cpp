@@ -11,7 +11,7 @@
 Rock::Rock(Window* _window) {
     // Please note that this is practically unused
     window = _window;
-    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
+//    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
     objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/rock.png");
     SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
 
@@ -38,7 +38,7 @@ Rock::Rock(Window* _window, std::string spawn) {
 
     positionX = static_cast<int>(renderPosX);
     positionY = static_cast<int>(renderPosY);
-    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
+//    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
     hp = 2;
     ttl = -1;
     name = "standard_sprite";
@@ -56,13 +56,16 @@ void Rock::Render(Window &window) {
         hp--;
     }
     if (ttl > 0) {
-        SDL_Log("Rock TTL = %i", ttl);
+//        SDL_Log("Rock TTL = %i", ttl);
         ttl--;
     } else if (ttl == 0) {
         delete this;
         return;
     }
-//    SDL_Log("x pos = %f, y pos = %f, x rend = %i, y rend = %i", positionX, positionY, renderPosX, renderPosY);
+//    if (name == "asteroid") {
+        SDL_Log("[Rock Renderer] x pos = %f, y pos = %f, x rend = %i, y rend = %i", positionX, positionY, renderPosX, renderPosY);
+//    }
+
     SDL_Rect dstRect = { renderPosX, renderPosY, 32, 32 };
     SDL_Rect srcRect = { 0 , 0, 32, 32 };;
     SDL_RendererFlip flip = SDL_RendererFlip();
@@ -82,26 +85,31 @@ Rock::Rock(Window *_window, int face, int initAngle, int spawnPoint, const std::
     std::uniform_int_distribution<> distrVelocity(0, 5);
     positionX = 0;
     positionY = 0;
+    renderPosX = 0;
+    renderPosY = 0;
 
     if (spawn == "asteroid") {
+        name = "asteroid";
         movable = true;
+        hp = -1;
         switch(face) {
             case 0: // UP
                 positionX = static_cast<float>(spawnPoint);
-                positionY = static_cast<float>(150);
+                positionY = static_cast<float>(-50);
+//                SDL_Log("Starting coords: X= %f , Y=%f", positionX, positionY);
                 angle = -initAngle;
                 break;
             case 1: // RIGHT
-                positionX = static_cast<float>(spawnPoint);
-                positionY = static_cast<float>(_window->Width + 50);
-                angle = initAngle + 180;
+                positionX = static_cast<float>(_window->Width + 50);
+                positionY = static_cast<float>(spawnPoint);
+                angle = initAngle - 180;
                 break;
-            case 2:
+            case 2: // DOWN
                 positionX = static_cast<float>(spawnPoint);
                 positionY = static_cast<float>(_window->Height + 50);
                 angle = initAngle;
                 break;
-            case 3:
+            case 3: // LEFT
                 positionX = -50;
                 positionY = static_cast<float>(spawnPoint);
                 angle = initAngle + 90;
@@ -117,10 +125,11 @@ Rock::Rock(Window *_window, int face, int initAngle, int spawnPoint, const std::
     SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
     renderPosX = static_cast<int>(positionX);
     renderPosY = static_cast<int>(positionY);
-    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
+    SDL_Log("Starting coords (render/int): X= %i , Y=%i", renderPosX, renderPosY);
+//    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
     hp = 2;
     ttl = -1;
     name = "standard_sprite";
-    SDL_Log("Random rock spawned");
+    SDL_Log("Random rock spawned. Face: %i Angle: %i Velocity: %i SpawnPos: %i ", face, initAngle, velocity, spawnPoint);
 
 }
