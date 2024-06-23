@@ -171,7 +171,7 @@ playerAccel = false;
       }
 
       int rockSpawnRoll = distrRockGen(gen); // TODO: Create some kind of RandomnessUtility to handle def too much random vars in the main xd
-      if (rockSpawnRoll > 8) {
+      if (rockSpawnRoll > 98) {
           int face = distrFaceGen(gen);
           int angle = distrAngleGen(gen);
           int spawnPoint;

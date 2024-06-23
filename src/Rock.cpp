@@ -63,7 +63,7 @@ void Rock::Render(Window &window) {
         return;
     }
 //    if (name == "asteroid") {
-        SDL_Log("[Rock Renderer] x pos = %f, y pos = %f, x rend = %i, y rend = %i", positionX, positionY, renderPosX, renderPosY);
+//        SDL_Log("[Rock Renderer] x pos = %f, y pos = %f, x rend = %i, y rend = %i", positionX, positionY, renderPosX, renderPosY);
 //    }
 
     SDL_Rect dstRect = { renderPosX, renderPosY, 32, 32 };
@@ -125,11 +125,11 @@ Rock::Rock(Window *_window, int face, int initAngle, int spawnPoint, const std::
     SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
     renderPosX = static_cast<int>(positionX);
     renderPosY = static_cast<int>(positionY);
-    SDL_Log("Starting coords (render/int): X= %i , Y=%i", renderPosX, renderPosY);
+//    SDL_Log("Starting coords (render/int): X= %i , Y=%i", renderPosX, renderPosY);
 //    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
     hp = 2;
     ttl = -1;
     name = "standard_sprite";
-    SDL_Log("Random rock spawned. Face: %i Angle: %i Velocity: %i SpawnPos: %i ", face, initAngle, velocity, spawnPoint);
+//    SDL_Log("Random rock spawned. Face: %i Angle: %i Velocity: %i SpawnPos: %i ", face, initAngle, velocity, spawnPoint);
 
 }
