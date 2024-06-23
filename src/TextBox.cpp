@@ -33,3 +33,14 @@ void TextBox::Render(Window &window) {
 //    SDL_FreeSurface(surfaceMessage);
 //    SDL_DestroyTexture(textTexture);
 }
+
+TextBox::TextBox(Window *_window, int x, int y, int w, int h, std::string c, int fontSize) {
+    window = _window;
+    posX = x;
+    posY = y;
+    width = w;
+    height = h;
+    content = c;
+    Sans = TTF_OpenFont("data/font/Audiowide-Regular.ttf", fontSize);
+
+}

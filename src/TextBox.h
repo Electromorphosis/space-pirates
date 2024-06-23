@@ -19,6 +19,7 @@ public:
     TTF_Font* Sans = TTF_OpenFont("data/font/Audiowide-Regular.ttf", 20);
     SDL_Color White = {255, 255, 255, 0};
     TextBox(Window* _window, int posX, int posY, int width, int height, std::string content);
+    TextBox(Window* _window, int posX, int posY, int width, int height, std::string content, int fontSize);
     void Render(Window &window);
 
     int posX;

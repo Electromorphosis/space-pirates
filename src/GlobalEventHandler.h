@@ -10,6 +10,7 @@ class GlobalEventHandler {
 public:
     int score = 0;
     int difficulty;
+    bool gameOn = true;
     explicit GlobalEventHandler(int diffLevel);
 };
 

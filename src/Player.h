@@ -32,6 +32,7 @@ public:
     void Render(Window &renderer) override;
     void UpdateAnimState(Window &renderer);
     void Damage(int dp) override;
+    void Destroy();
     int animStateTtl = 0;
     bool damaged = true;
 };

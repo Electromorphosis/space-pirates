@@ -19,7 +19,8 @@ int main(int , char **) {
   GlobalEventHandler globalEventHandler(0);
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrPartGen(0, 3);
+    std::uniform_int_distribution<> distrJetParticles(0, 3);
+    std::uniform_int_distribution<> distrExplosionParticles(0, 5);
     std::uniform_int_distribution<> distrRockGen(0, 100);
     bool playerAccel = false;
     bool spawnPlayerLaser = false;
@@ -37,9 +38,11 @@ int main(int , char **) {
     {
         printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
     }
+    int gameOverTtl = 999;
 //Player player(&window);
 //std::unique_ptr<Player> player(new Player(&window));
 Player* player = new Player(&window);
+    player->movable = true;
     window.player = std::unique_ptr<Player>(player);
 
 ////    Player& player;
@@ -64,14 +67,14 @@ window.scoreTextBox = std::make_unique<TextBox>(&window, 0, 0, 130, 24, initScor
 
 //    window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, 0, 180, 250, "asteroid"));
 
-
-  for (bool game_active = true; game_active;) {
+bool gameLoop = true;
+  while (gameLoop) {
 
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) { // check if there are some events
       if (event.type == SDL_QUIT)
-        game_active = false;
+          return 0;
 
     }
 
@@ -80,6 +83,8 @@ playerAccel = false;
 // Todo: Add velocity vector which is applied at the end of the scan, so that <<possibly>> it will work for multi-key combos
 
 //    player->currentAnimationState = Player::IDLE;
+if (player->movable) {
+
 
     if (keyboardState[SDL_SCANCODE_W]) {
         player->velocity += 0.1;
@@ -106,6 +111,7 @@ playerAccel = false;
         player->currentAnimationState = Player::SHOOT;
         spawnPlayerLaser = true;
     }
+}
 //
 //      if (event.type == SDL_KEYDOWN && keyboardState[SDL_SCANCODE_SPACE]) {
 //          playerShoots = true;
@@ -123,7 +129,7 @@ playerAccel = false;
       // Particle effects
     if (playerAccel) {
 
-        int partRoll = distrPartGen(gen);
+        int partRoll = distrJetParticles(gen);
         if (player->velocity != 0 && partRoll == 1) { // Some random colored particles, but most pale
             window.particleEffectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 10,  "random", true));
     //      SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
@@ -215,10 +221,56 @@ playerAccel = false;
     }
 
     lastFrameTime = SDL_GetTicks();
+SDL_Log("HP = %i", player->hp);
+    if(player->hp <= 0 && player->currentAnimationState != Player::DESTROY) {
+//        globalEventHandler.gameOn = false;
+player->currentAnimationState = Player::DESTROY;
+player->name = "None"; // This will disable further collisions
+gameOverTtl = 100;
+    }
+    if (player->currentAnimationState == Player::DESTROY) {
+        player->velocity /= 1.1;
+        gameOverTtl -= 1;
 
+    }
+      if (gameOverTtl <= 70) {
+          for (int i = 0; i < 15; i++) {
+              int partRoll = distrExplosionParticles(gen);
+              if (partRoll >= 3) { // Random particles with or without the color
+                  window.particleEffectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 15,  "explosion", true));
+                  //      SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
+              } else {
+                  window.particleEffectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 15,  "explosion", false));
+              }
+          }
+
+      }
+
+    if (gameOverTtl <= 60) {
+        for (int i = 0; i < 15; i++) {
+            int partRoll = distrExplosionParticles(gen);
+            if (partRoll >= 2) { // Random particles with or without the color
+                window.particleEffectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 30,  "explosion", true));
+                //      SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
+            } else {
+                window.particleEffectsVector.push_back(std::make_unique<Particle>(&window, player->positionX, player->positionY, 30,  "explosion", false));
+            }
+        }
+
+    }
+      if (gameOverTtl <= 50) {
+          globalEventHandler.gameOn = false;
+
+      }
+    if (gameOverTtl <= 0) {
+        gameLoop = false;
+    }
 
   }
-
+  std::string gameOverText = "GAME OVER";
+  window.textBoxesVector.push_back(std::make_unique<TextBox>(&window, width/3, height/3, width/3, height/6, gameOverText, 20));
+  window.RenderAll();
+SDL_Delay(5000);
   return 0;
 }
 
