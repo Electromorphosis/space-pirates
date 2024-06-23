@@ -22,6 +22,8 @@ public:
     int Width = 0;
     int Height = 0;
     int score = 0;
+    int menuHighlight = 0;
+    bool renderMenu = true;
     ~Window();
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -41,6 +43,8 @@ public:
     void TidyGameObjects();
     void CheckAllCollisions();
     void UpdateGui();
+    void RenderMenuHighlight();
+    void RestartRenderer();
 
     bool checkIfTwoObjectsCollide(const std::unique_ptr<GameObject>& object1, const std::unique_ptr<GameObject>& object2);
 };
