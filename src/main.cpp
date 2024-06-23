@@ -40,7 +40,7 @@ Player* player = new Player(&window);
 //        Player* playerPtr = static_cast<Player*>(window.gameObjectsVector.at(0).get());
 ////        player = *playerPtr; // Dereference the pointer and assign to the reference
 //    }
-//
+
 //    for (int i = 0; i < 8; i++) {
 //        window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, "random"));
 //    }
@@ -51,7 +51,7 @@ Player* player = new Player(&window);
     const Uint32 SHOOT_COOLDOWN_MS = 1000;
     Uint32 lastShootTime = 0;
 
-    window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, 0, 45, 250, "asteroid"));
+//    window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, 0, 180, 250, "asteroid"));
 
 
   for (bool game_active = true; game_active;) {
@@ -159,32 +159,32 @@ playerAccel = false;
       for (auto& gameObject : window.gameObjectsVector) {
           if (gameObject && gameObject->movable) {
               std::vector<float> gameObjectNewMovementVector = movementUtility->calculate(gameObject->angle);
-//            SDL_Log("Vector calculated: { %f, %f }", projectileNewMovementVector.at(0), projectileNewMovementVector.at(1));
-//              SDL_Log("Projectile coordinates before re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
+//            SDL_Log("Vector calculated: { %f, %f }", gameObjectNewMovementVector.at(0), gameObjectNewMovementVector.at(1));
+//              SDL_Log("GameObject coordinates before re-calculate (float): {%f, %f}", gameObject->positionX, gameObject->positionY);
 
-              gameObject->positionX += gameObjectNewMovementVector.at(0) * gameObject->velocity;
-              gameObject->positionY -= gameObjectNewMovementVector.at(1) * gameObject->velocity;
+              gameObject->positionX += gameObjectNewMovementVector.at(0);
+              gameObject->positionY -= gameObjectNewMovementVector.at(1);
               gameObject->renderPosX = static_cast<int>(gameObject->positionX);
               gameObject->renderPosY = static_cast<int>(gameObject->positionY); //TODO: Move to GameObject::UpdatePostion() ?
-//              SDL_Log("Projectile coordinates after re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
+//              SDL_Log("GameObject coordinates after re-calculate (float): {%f, %f}; (int): {%i, %i}", gameObject->positionX, gameObject->positionY, gameObject->renderPosX, gameObject->renderPosY);
           }
       }
 
-//      int rockSpawnRoll = distrRockGen(gen); // TODO: Create some kind of RandomnessUtility to handle def too much random vars in the main xd
-//      if (rockSpawnRoll == 10) {
-//          int face = distrFaceGen(gen);
-//          int angle = distrAngleGen(gen);
-//          int spawnPoint;
-//          if (face == 0 || face == 2) {
-//              spawnPoint = distrWidthGen(gen);
-//          } else {
-//              spawnPoint = distrHeightGen(gen);
-//          }
-//
+      int rockSpawnRoll = distrRockGen(gen); // TODO: Create some kind of RandomnessUtility to handle def too much random vars in the main xd
+      if (rockSpawnRoll > 8) {
+          int face = distrFaceGen(gen);
+          int angle = distrAngleGen(gen);
+          int spawnPoint;
+          if (face == 0 || face == 2) {
+              spawnPoint = distrWidthGen(gen);
+          } else {
+              spawnPoint = distrHeightGen(gen);
+          }
 
-//                  window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, face, angle, spawnPoint, "asteroid"));
 
-//      }
+                  window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, face, angle, spawnPoint, "asteroid"));
+
+      }
 
 
 
