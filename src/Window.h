@@ -30,6 +30,7 @@ public:
     std::vector<std::unique_ptr<GameObject>> projectilesVector; // Laser beams
     std::vector<std::unique_ptr<GameObject>> particleEffectsVector; // Small VFXs - particle effects
 
+    std::vector<std::unique_ptr<TextBox>> textBoxesVector; // VariousNonConstantTextBoxes
     std::unique_ptr<TextBox> scoreTextBox; // UI elements: player's score
     std::unique_ptr<TextBox> healthTextBox; // UI elements: player's HP
     std::unique_ptr<GameObject> player;

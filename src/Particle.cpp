@@ -27,7 +27,8 @@ Particle::Particle(Window* _window, float posX, float posY, int dispersionRate, 
     testStartPosY = static_cast<int>(positionY);
     std::random_device rd;
     std::mt19937 gen(rd());
-    if (spawn == "random") {
+
+    if (spawn == "random") { // More like - jetstream spawn
         std::uniform_int_distribution<> distrX(static_cast<int>(positionX)+16-dispersionRate, static_cast<int>(positionX)+16+dispersionRate); // Todo: dynamic for width/height, though that might not be needed for now.
         renderPosX = distrX(gen);
         positionX = static_cast<float>(renderPosX);
@@ -43,7 +44,30 @@ Particle::Particle(Window* _window, float posX, float posY, int dispersionRate, 
             Uint8 texModValue = static_cast<Uint8>(distrTexMod(gen));
             SDL_SetTextureColorMod(objectTexture, texModValue, 100, 100);
         }
-    }
+    } else if (spawn == "explosion") {
+        // Generate random radius within dispersion rate
+        std::uniform_real_distribution<float> distrRadius(0.0f, static_cast<float>(dispersionRate));
+        float radius = distrRadius(gen);
+
+        // Generate random angle between 0 and 2*pi
+        std::uniform_real_distribution<float> distrAngle(0.0f, 2.0f * M_PI);
+        float theta = distrAngle(gen);
+
+        // Convert polar coordinates to rectangular
+        positionX = positionX + radius * cos(theta) + 16;
+        positionY = positionY + radius * sin(theta) + 16;
+        renderPosX = static_cast<int>(positionX);
+        renderPosY = static_cast<int>(positionY);
+
+        angle = static_cast<int>(distrAngle(gen));
+        std::uniform_int_distribution<> distrTtl(50, 100);
+        ttl = distrTtl(gen);
+        if (randCol) {
+            std::uniform_int_distribution<> distrTexMod(50, 250);
+            Uint8 texModValue = static_cast<Uint8>(distrTexMod(gen));
+            SDL_SetTextureColorMod(objectTexture, texModValue, 100, 100);
+        }
+        }
     SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
 }
 

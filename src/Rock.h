@@ -20,7 +20,7 @@ public:
     GlobalEventHandler* geh;
     int textureWidth = 32;
     int textureHeight = 32;
-    CollisionBox collisionBox = CollisionBox(nullptr, 0, 0, 0, 0, CollisionType::TerrainDestructible);
+//    CollisionBox collisionBox = CollisionBox(nullptr, 0, 0, 0, 0, CollisionType::TerrainDestructible);
     void Render(Window &renderer) override;
     void Damage(int dp) override;
 };

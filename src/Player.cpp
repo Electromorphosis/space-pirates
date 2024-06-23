@@ -26,17 +26,18 @@ void Player::Render(Window &window) {
     SDL_RendererFlip flip = SDL_RendererFlip();
 ////    SDL_Log("test");
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
-    CollisionBox collisionBox = CollisionBox(&window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
-    collisionBox.Render(window);
+//    CollisionBox collisionBox = CollisionBox(&window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
+//    collisionBox.Render(window);
 
 }
 
 
 void Player::UpdateAnimState(Window &renderer) {
-
+SDL_Log("%i", frameCounter);
 // Modulo calc on sprites dependd on the length of a given animation
     switch (currentAnimationState) {
         case IDLE: // Always only one frame on idle
+        frameCounter = 0;
             objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/ship0.png");
             break;
         case SHOOT: // 3 frames
@@ -92,9 +93,11 @@ void Player::UpdateAnimState(Window &renderer) {
             }
             break;
         case CLOCKWISE_TURN:
+            frameCounter = 0;
             objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/clock.png");
             break;
         case COUNTER_TURN:
+            frameCounter = 0;
             objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/counter.png");
             break;
         case DAMAGED:
@@ -106,37 +109,36 @@ void Player::UpdateAnimState(Window &renderer) {
                 if (animStateTtl <= 0) {
                     currentAnimationState = IDLE;
                     damaged = false;
+                    frameCounter = 0;
                 }
             }
             SDL_Log("ttl = %i, state = %u", animStateTtl, currentAnimationState);
             objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/shield.png");
             break;
         case DESTROY:
-            frameCounter %= 3;
-            switch(frameCounter) {
-                case 0:
-                    objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/destroy0.png");
-                    break;
-                case 1:
-                    objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/destroy1.png");
-                    break;
-                case 2:
-                    objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/destroy2.png");
-                    break;
-                default: // "Booms" are de facto debugging mechanism
+            if(frameCounter < 4) {
+                objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/destroy0.png");
+            } else if (frameCounter < 8) {
+
+                objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/destroy1.png");
+            } else if (frameCounter < 12) {
+                objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/destroy2.png");
+            } else {
                     objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/boom.png");
-                    break;
             }
             break;
-//        case DAMAGED:
-//            break;
         default:
             break;
+    }
+//        case DAMAGED:
+//            break;
+
     };
 
-}
+
 
 void Player::Damage(int dp) {
     currentAnimationState = DAMAGED;
     hp -= dp;
 }
+

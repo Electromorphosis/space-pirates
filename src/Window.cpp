@@ -50,11 +50,18 @@ void Window::RenderAll() {
         }
     }
 
-    player->Render(*this);
+    if (geh->gameOn) {
+        player->Render(*this);
+    }
+
 
     scoreTextBox->Render(*this);
     healthTextBox->Render(*this);
-
+    for (const auto& textBox : textBoxesVector) {
+        if (textBox) {
+            textBox->Render(*this); // Dereference after null check
+        }
+    }
     SDL_RenderPresent(renderer); // draw frame to screen
 }
 
