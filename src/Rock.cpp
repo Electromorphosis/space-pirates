@@ -12,7 +12,7 @@ Rock::Rock(Window* _window, GlobalEventHandler* _events) {
     // Please note that this is practically unused
     window = _window;
     geh = _events;
-//    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
+    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
     objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/rock.png");
     SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
 
@@ -40,7 +40,7 @@ Rock::Rock(Window* _window, GlobalEventHandler* _events, std::string spawn) {
 
     positionX = static_cast<int>(renderPosX);
     positionY = static_cast<int>(renderPosY);
-//    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
+    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
     hp = 2;
     ttl = -1;
     name = "standard_sprite";
@@ -76,11 +76,11 @@ void Rock::Render(Window &window) {
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
 
     // debug - render collision box
-//    collisionBox.Render(window);
+    collisionBox.Render(window);
 }
 
-void Rock::Damage() {
-    hp--;
+void Rock::Damage(int dp) {
+    hp -= dp;
 }
 
 Rock::Rock(Window *_window, GlobalEventHandler *_events, int face, int initAngle, int spawnPoint, const std::string& spawn) {
@@ -131,7 +131,7 @@ Rock::Rock(Window *_window, GlobalEventHandler *_events, int face, int initAngle
     renderPosX = static_cast<int>(positionX);
     renderPosY = static_cast<int>(positionY);
 //    SDL_Log("Starting coords (render/int): X= %i , Y=%i", renderPosX, renderPosY);
-//    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
+    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
     hp = 1;
     ttl = -1;
     name = "asteroid";

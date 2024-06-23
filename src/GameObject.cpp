@@ -7,7 +7,3 @@
 void GameObject::Render(Window &renderer) {
 
 }
-
-void GameObject::Damage() {
-
-}

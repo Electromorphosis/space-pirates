@@ -77,3 +77,7 @@ if (ttl > 0) {
 //    SDL_SetRenderDrawColor( window.renderer, 0, 0, 0, 255 );
 
 }
+
+void Particle::Damage(int dp) {
+
+}

@@ -22,7 +22,7 @@ public:
     int renderPosX;
     int renderPosY;
     virtual void Render(Window& renderer);
-    virtual void Damage();
+    virtual void Damage(int dp) = 0;
     int ttl;
     int angle;
     int hp;

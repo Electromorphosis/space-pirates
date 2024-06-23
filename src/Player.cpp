@@ -4,6 +4,8 @@
 
 #include "Player.h"
 #include "Window.h"
+#include "CollisionType.h"
+#include "CollisionBox.h"
 
 Player::Player(Window* _window){
     window = _window;
@@ -13,7 +15,8 @@ Player::Player(Window* _window){
     renderPosY = static_cast<int>(positionY);
     objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/ship0.png"); // Todo this and one below move to some Texture Management class
     SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
-
+    hp = 3; // TODO link to GEH
+    name = "player";
 }
 
 void Player::Render(Window &window) {
@@ -23,6 +26,9 @@ void Player::Render(Window &window) {
     SDL_RendererFlip flip = SDL_RendererFlip();
 ////    SDL_Log("test");
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
+    CollisionBox collisionBox = CollisionBox(&window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
+    collisionBox.Render(window);
+
 }
 
 
@@ -91,6 +97,20 @@ void Player::UpdateAnimState(Window &renderer) {
         case COUNTER_TURN:
             objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/counter.png");
             break;
+        case DAMAGED:
+            if (!damaged) {
+                damaged = true;
+                animStateTtl = 8;
+            } else {
+                animStateTtl--;
+                if (animStateTtl <= 0) {
+                    currentAnimationState = IDLE;
+                    damaged = false;
+                }
+            }
+            SDL_Log("ttl = %i, state = %u", animStateTtl, currentAnimationState);
+            objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/shield.png");
+            break;
         case DESTROY:
             frameCounter %= 3;
             switch(frameCounter) {
@@ -114,4 +134,9 @@ void Player::UpdateAnimState(Window &renderer) {
             break;
     };
 
+}
+
+void Player::Damage(int dp) {
+    currentAnimationState = DAMAGED;
+    hp -= dp;
 }

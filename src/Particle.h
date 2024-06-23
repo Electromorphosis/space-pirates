@@ -21,7 +21,7 @@ public:
     int angle = 0;
     int ttl = 5; // Time To Live default value - eventually could also be changed
     void Render(Window &renderer) override;
-
+    void Damage(int dp) override;
     int testStartPosX =0;
     int testStartPosY =0;
 };

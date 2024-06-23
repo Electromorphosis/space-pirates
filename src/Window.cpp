@@ -53,6 +53,7 @@ void Window::RenderAll() {
     player->Render(*this);
 
     scoreTextBox->Render(*this);
+    healthTextBox->Render(*this);
 
     SDL_RenderPresent(renderer); // draw frame to screen
 }
@@ -105,18 +106,28 @@ void Window::CheckAllCollisions() {
         if (projectile) {
             for (auto& gameObject : gameObjectsVector) {
                 if (gameObject) {
-                    bool collision = checkIfTwoObjectsCollide(projectile, gameObject);
-                    if (collision) {
+                    if (checkIfTwoObjectsCollide(projectile, gameObject)) {
 //                        SDL_Log("Collision!");
-                        gameObject->Damage();
-                        projectile->Damage();
-                    }
+                        gameObject->Damage(1);
+                        projectile->Damage(1);
                 }
 
             }
         }
+    }}
+
+        for (auto& gameObject : gameObjectsVector) {
+        if (gameObject  ) {
+            if (checkIfTwoObjectsCollide(gameObject, player)) {
+                                        SDL_Log("Collision!");
+
+                gameObject->Damage(20);
+                player->Damage(1);
+            }
+        }
+        }
     }
-}
+
 
 bool Window::checkIfTwoObjectsCollide(const std::unique_ptr<GameObject> &object1, const std::unique_ptr<GameObject> &object2) {
     {
@@ -127,7 +138,7 @@ bool Window::checkIfTwoObjectsCollide(const std::unique_ptr<GameObject> &object1
         if (object1->name == "laser") { // Turbo-shady but well xD
             o1_width = 9;
             o1_height = 9;
-        } else if (object1->name == "asteroid") {
+        } else if (object1->name == "asteroid" || object1->name == "standard_sprite" || object1->name == "player") {
             o1_width = 32;
             o1_height = 32;
         }
@@ -138,7 +149,7 @@ bool Window::checkIfTwoObjectsCollide(const std::unique_ptr<GameObject> &object1
         if (object2->name == "laser") { // Turbo-shady but well xD
             o2_width = 9;
             o2_height = 9;
-        } else if (object2->name == "asteroid") {
+        } else if (object2->name == "asteroid" || object2->name == "standard_sprite" || object2->name == "player") {
             o2_width = 32;
             o2_height = 32;
         }
@@ -182,6 +193,7 @@ void Window::TidyGameObjects() {
     );
 }
 
-void Window::UpdateScore() {
+void Window::UpdateGui() {
     scoreTextBox->content = "SCORE : " + std::to_string(geh->score);
+    healthTextBox->content = "HP : " + std::to_string(player->hp);
 }
