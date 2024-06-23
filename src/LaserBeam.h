@@ -20,7 +20,7 @@ public:
     CollisionBox collisionBox = CollisionBox(nullptr, 0, 0, 0, 0, CollisionType::FriendlyProjectile);
     void updateCollisionBox();
     void CheckCollision(CollisionType ct);
-    void Damage() override;
+    void Damage(int dp) override;
 };
 
 

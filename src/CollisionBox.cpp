@@ -43,3 +43,7 @@ void CollisionBox::Render(Window& renderWindow) {
     SDL_RenderDrawLine(renderWindow.renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
     SDL_SetRenderDrawColor(renderWindow.renderer, 0, 0, 0, 255);
 }
+
+void CollisionBox::Damage(int dp) {
+
+}

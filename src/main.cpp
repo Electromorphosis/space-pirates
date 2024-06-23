@@ -48,11 +48,14 @@ Player* player = new Player(&window);
 ////        player = *playerPtr; // Dereference the pointer and assign to the reference
 //    }
 
-//    for (int i = 0; i < 8; i++) {
-//        window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, "random"));
-//    }
-std::string content = "SCORE : 0";
-window.scoreTextBox = std::make_unique<TextBox>(&window, 0, 0, 130, 24, content);
+    for (int i = 0; i < 20; i++) {
+        window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, &globalEventHandler, "random"));
+    }
+std::string initScore = "SCORE : 0";
+    std::string initHP = "HP : 3";
+    // TODO: Could be useful to have an utility for calculation of a sensible text box size based on font & char sizes
+window.scoreTextBox = std::make_unique<TextBox>(&window, 0, 0, 130, 24, initScore);
+    window.healthTextBox = std::make_unique<TextBox>(&window, width-80, 0, 80, 24, initHP);
     Uint32 lastFrameTime = SDL_GetTicks();
 
     const Uint32 MS_PER_FRAME = 1000 / 60; // Limit FPS do 60
@@ -197,7 +200,7 @@ playerAccel = false;
 
 
     window.CheckAllCollisions();
-      window.UpdateScore();
+      window.UpdateGui();
     window.RenderAll();
     Uint32 currentFrameTime = SDL_GetTicks();
     Uint32 elapsedTime = currentFrameTime - lastFrameTime;

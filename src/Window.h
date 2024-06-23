@@ -28,8 +28,10 @@ public:
     GlobalEventHandler* geh;
     std::vector<std::unique_ptr<GameObject>> gameObjectsVector; // "Entities" such as rocks
     std::vector<std::unique_ptr<GameObject>> projectilesVector; // Laser beams
-    std::vector<std::unique_ptr<GameObject>> particleEffectsVector; // Small VFXs
+    std::vector<std::unique_ptr<GameObject>> particleEffectsVector; // Small VFXs - particle effects
+
     std::unique_ptr<TextBox> scoreTextBox; // UI elements: player's score
+    std::unique_ptr<TextBox> healthTextBox; // UI elements: player's HP
     std::unique_ptr<GameObject> player;
 
     void RenderAll();
@@ -37,7 +39,7 @@ public:
     void TidyProjectiles();
     void TidyGameObjects();
     void CheckAllCollisions();
-    void UpdateScore();
+    void UpdateGui();
 
     bool checkIfTwoObjectsCollide(const std::unique_ptr<GameObject>& object1, const std::unique_ptr<GameObject>& object2);
 };

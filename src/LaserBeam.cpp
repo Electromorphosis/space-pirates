@@ -41,8 +41,8 @@ void LaserBeam::Render(Window &window) {
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
 
     // Debug - render collision box
-//    updateCollisionBox();
-//    collisionBox.Render(window);
+    updateCollisionBox();
+    collisionBox.Render(window);
 }
 
 LaserBeam::~LaserBeam() {
@@ -59,6 +59,6 @@ void LaserBeam::updateCollisionBox() {
     collisionBox.UpdatePosition(positionX, positionY);
 }
 
-void LaserBeam::Damage() {
-    hp--;
+void LaserBeam::Damage(int dp) {
+    hp -= dp;
 }

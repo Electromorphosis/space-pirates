@@ -19,6 +19,7 @@ public:
 
     void UpdatePosition(float newPosX, float newPosY);
 //    std::string color = "default";
+void Damage(int dp) override;
 };
 
 

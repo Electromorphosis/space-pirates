@@ -31,6 +31,9 @@ public:
     bool isShooting = false;
     void Render(Window &renderer) override;
     void UpdateAnimState(Window &renderer);
+    void Damage(int dp) override;
+    int animStateTtl = 0;
+    bool damaged = true;
 };
 
 
