@@ -49,8 +49,8 @@ Player* player = new Player(&window);
 //    for (int i = 0; i < 8; i++) {
 //        window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, "random"));
 //    }
-std::string content = "Hello SDL";
-window.textBoxesVector.push_back(std::make_unique<TextBox>(&window, 0, 0, 100, 24, content));
+std::string content = "SCORE : 0";
+window.textBoxesVector.push_back(std::make_unique<TextBox>(&window, 0, 0, 130, 24, content));
     Uint32 lastFrameTime = SDL_GetTicks();
 
     const Uint32 MS_PER_FRAME = 1000 / 60; // Limit FPS do 60
@@ -195,6 +195,7 @@ playerAccel = false;
 
 
     window.CheckAllCollisions();
+      window.UpdateScore();
     window.RenderAll();
     Uint32 currentFrameTime = SDL_GetTicks();
     Uint32 elapsedTime = currentFrameTime - lastFrameTime;

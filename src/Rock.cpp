@@ -45,6 +45,7 @@ Rock::Rock(Window* _window, std::string spawn) {
 }
 
 Rock::~Rock() {
+
     delete objectTexture;
     delete window;
 }
@@ -129,7 +130,7 @@ Rock::Rock(Window *_window, int face, int initAngle, int spawnPoint, const std::
 //    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
     hp = 2;
     ttl = -1;
-    name = "standard_sprite";
+    name = "asteroid";
 //    SDL_Log("Random rock spawned. Face: %i Angle: %i Velocity: %i SpawnPos: %i ", face, initAngle, velocity, spawnPoint);
 
 }

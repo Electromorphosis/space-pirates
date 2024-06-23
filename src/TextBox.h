@@ -16,7 +16,7 @@ public:
     Window* window;
     SDL_Texture* textTexture = nullptr;
     SDL_Surface* surfaceMessage = nullptr;
-    TTF_Font* Sans = TTF_OpenFont("data/font/Audiowide-Regular.ttf", 12);
+    TTF_Font* Sans = TTF_OpenFont("data/font/Audiowide-Regular.ttf", 20);
     SDL_Color White = {255, 255, 255, 0};
     TextBox(Window* _window, int posX, int posY, int width, int height, std::string content);
     void Render(Window &window);

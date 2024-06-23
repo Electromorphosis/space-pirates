@@ -16,7 +16,7 @@ TextBox::TextBox(Window* _window, int x, int y, int w, int h, std::string c) {
 }
 
 void TextBox::Render(Window &window) {
-    SDL_Log("render text");
+//    SDL_Log("render text");
 //    TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 24);
 //    SDL_Color White = {255, 255, 255, 0};
     surfaceMessage = TTF_RenderText_Solid(Sans, content.c_str(), White);

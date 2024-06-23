@@ -20,6 +20,7 @@ public:
     Window(int windowWidth, int windowHeight);
     int Width = 0;
     int Height = 0;
+    int score = 0;
     ~Window();
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -34,6 +35,7 @@ public:
     void TidyProjectiles();
     void TidyGameObjects();
     void CheckAllCollisions();
+    void UpdateScore();
 
     bool checkIfTwoObjectsCollide(const std::unique_ptr<GameObject>& object1, const std::unique_ptr<GameObject>& object2);
 };
