@@ -4,6 +4,8 @@
 
 #include "Window.h"
 #include <algorithm>
+#include <SDL2/SDL_ttf.h>
+
 //#include "Particle.h"
 
 Window::Window(int windowWidth, int windowHeight) {
@@ -49,7 +51,11 @@ void Window::RenderAll() {
 
     player->Render(*this);
 
-
+    for (const auto& textBox : textBoxesVector) {
+        if (textBox) {
+            textBox->Render(*this); // Dereference after null check
+        }
+    }
 
     SDL_RenderPresent(renderer); // draw frame to screen
 }

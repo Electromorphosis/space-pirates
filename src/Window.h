@@ -9,9 +9,11 @@
 #include <vector>
 #include "GameObject.h"
 //#include "Particle.h"
+#include "TextBox.h"
 #include <memory>
 
 class GameObject;
+class TextBox;
 
 class Window {
 public:
@@ -24,6 +26,7 @@ public:
     std::vector<std::unique_ptr<GameObject>> gameObjectsVector; // "Entities" such as rocks
     std::vector<std::unique_ptr<GameObject>> projectilesVector; // Laser beams
     std::vector<std::unique_ptr<GameObject>> particleEffectsVector; // Small VFXs
+    std::vector<std::unique_ptr<TextBox>> textBoxesVector; // UI elements
     std::unique_ptr<GameObject> player;
 
     void RenderAll();

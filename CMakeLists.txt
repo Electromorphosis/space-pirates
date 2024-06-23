@@ -26,7 +26,7 @@ file(GLOB_RECURSE space_pirates_H_SOURCES "src/*.h")
 
 add_executable(space_pirates ${space_pirates_CPP_SOURCES} ${space_pirates_H_SOURCES})
 
-target_link_libraries(space_pirates ${SDL2_LIBRARIES} SDL2_image)
+target_link_libraries(space_pirates ${SDL2_LIBRARIES} SDL2_image SDL2_ttf)
 
 add_custom_command(TARGET space_pirates PRE_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory

@@ -4,11 +4,12 @@
 #include "MovementUtility.h"
 #include "Player.h"
 #include "Rock.h"
-
+#include "TextBox.h"
 #include "Particle.h"
 #include "LaserBeam.h"
 #include <memory>
 #include <random>
+#include <SDL2/SDL_ttf.h>
 
 
 int main(int , char **) {
@@ -29,7 +30,11 @@ int main(int , char **) {
     std::uniform_int_distribution<> distrAngleGen(0, 180);
     std::uniform_int_distribution<> distrFaceGen(0, 3); // 0 - up, 1 - right, 2 - down, 3 - left
     Window window(width, height);
-
+    //Initialize SDL_ttf
+    if( TTF_Init() == -1 )
+    {
+        printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+    }
 //Player player(&window);
 //std::unique_ptr<Player> player(new Player(&window));
 Player* player = new Player(&window);
@@ -44,7 +49,8 @@ Player* player = new Player(&window);
 //    for (int i = 0; i < 8; i++) {
 //        window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, "random"));
 //    }
-
+std::string content = "Hello SDL";
+window.textBoxesVector.push_back(std::make_unique<TextBox>(&window, 0, 0, 100, 24, content));
     Uint32 lastFrameTime = SDL_GetTicks();
 
     const Uint32 MS_PER_FRAME = 1000 / 60; // Limit FPS do 60
