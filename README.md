@@ -19,3 +19,9 @@ https://en.wikipedia.org/wiki/Entity_component_system#Common_patterns_in_ECS_use
 
 ## Licensing
 Spaceships by PixelWolf https://pixelwolfnet.itch.io/space-shooter-assets (CC0 - Creative Commons Licence)
+
+
+### Font Details
+Designer Name: 	Astigmatic One Eye Typographic Institute
+Font License: 	Public domain, GPL, OFL
+Website: 	http://www.astigmatic.com
