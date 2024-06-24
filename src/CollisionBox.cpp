@@ -1,11 +1,10 @@
 //
 // Created by mechlon on 15.06.24.
 //
-#include "SDL2/SDL_image.h"
+
 #include "SDL2/SDL_render.h"
 #include "CollisionBox.h"
 #include "CollisionType.h"
-#include <string>
 
 CollisionBox::CollisionBox(Window *_window, float posX, float posY, int initWidth, int initHeight, CollisionType ct) {
     window = _window;
