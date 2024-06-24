@@ -1,12 +1,11 @@
-//
-// Created by mechlon on 09.06.24.
-//
 
 #ifndef SPACE_PIRATES_PARTICLE_H
 #define SPACE_PIRATES_PARTICLE_H
-#include "GameObject.h"
-#include "Window.h"
+
 #include <string>
+
+#include "Window.h"
+#include "GameObject.h"
 
 class Particle : public GameObject {
 public:

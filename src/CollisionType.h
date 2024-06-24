@@ -1,6 +1,3 @@
-//
-// Created by mechlon on 15.06.24.
-//
 
 #ifndef SPACE_PIRATES_COLLISIONTYPE_H
 #define SPACE_PIRATES_COLLISIONTYPE_H

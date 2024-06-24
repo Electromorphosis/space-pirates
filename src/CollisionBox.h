@@ -1,9 +1,7 @@
-//
-// Created by mechlon on 15.06.24.
-//
 
 #ifndef SPACE_PIRATES_COLLISIONBOX_H
 #define SPACE_PIRATES_COLLISIONBOX_H
+
 #include "GameObject.h"
 #include "CollisionType.h"
 

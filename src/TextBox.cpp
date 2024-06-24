@@ -1,8 +1,7 @@
-//
-// Created by mechlon on 23.06.24.
-//
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+
 #include "TextBox.h"
 
 TextBox::TextBox(Window* _window, int x, int y, int w, int h, std::string c) {

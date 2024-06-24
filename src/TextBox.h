@@ -1,14 +1,14 @@
-//
-// Created by mechlon on 23.06.24.
-//
 
 #ifndef SPACE_PIRATES_TEXTBOX_H
 #define SPACE_PIRATES_TEXTBOX_H
-#include "Window.h"
+
+#include <string>
+
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include <string>
+#include "Window.h"
+
 class Window;
 
 class TextBox {

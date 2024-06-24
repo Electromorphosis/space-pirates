@@ -1,12 +1,12 @@
-//
-// Created by mechlon on 09.06.24.
-//
 
 #ifndef SPACE_PIRATES_GAMEOBJECT_H
 #define SPACE_PIRATES_GAMEOBJECT_H
-#include "Window.h"
-#include <SDL2/SDL_image.h>
+
 #include <string>
+
+#include <SDL2/SDL_image.h>
+
+#include "Window.h"
 #include "GlobalEventHandler.h"
 
 class Window;
