@@ -11,17 +11,12 @@ LaserBeam::LaserBeam(Window *_window, float posX, float posY, int initAngle) {
     renderPosX = static_cast<int>(positionX);
     renderPosY = static_cast<int>(positionY);
     angle = initAngle;
-//    SDL_Log("Laser beam created at %f, %f {render: %d, %d }", positionX, positionY, renderPosX, renderPosY);
-if (angle > 315 && angle <= 45 || angle > 135 && angle <= 225 ) {
-    collisionBox = CollisionBox(window, positionX, positionY, textureWidth, textureHeight, CollisionType::FriendlyProjectile);
-} else {
-    collisionBox = CollisionBox(window, positionX, positionY, textureHeight, textureWidth, CollisionType::FriendlyProjectile);
-}
-    if(collisionBox.boxCollisionType == CollisionType::FriendlyProjectile) {
-//        SDL_Log("Box created at: %f, %f", positionX, positionY);
-    }
-    hp = 0;
-    name = "laser";
+    // SDL_Log("Laser beam created at %f, %f {render: %d, %d }", positionX, positionY, renderPosX, renderPosY);
+
+        collisionBox = CollisionBox(window, positionX, positionY, textureHeight, textureWidth, CollisionType::FriendlyProjectile);
+    //        SDL_Log("Box created at: %f, %f", positionX, positionY);
+        hp = 0;
+        name = "laser";
 
 }
 
