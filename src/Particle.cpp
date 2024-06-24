@@ -27,7 +27,7 @@ Particle::Particle(Window* _window, float posX, float posY, int dispersionRate, 
     std::mt19937 gen(rd());
 
     if (spawn == "random") { // More like - jetstream spawn
-        std::uniform_int_distribution<> distrX(static_cast<int>(positionX)+16-dispersionRate, static_cast<int>(positionX)+16+dispersionRate); // Todo: dynamic for width/height, though that might not be needed for now.
+        std::uniform_int_distribution<> distrX(static_cast<int>(positionX)+16-dispersionRate, static_cast<int>(positionX)+16+dispersionRate);
         renderPosX = distrX(gen);
         positionX = static_cast<float>(renderPosX);
         std::uniform_int_distribution<> distrY(static_cast<int>(positionY)+16-dispersionRate, static_cast<int>(positionY)+16+dispersionRate);

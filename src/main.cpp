@@ -93,7 +93,7 @@ int main(int , char **) {
             }
 
             int rockSpawnRoll = distrRockGen(
-                    gen); // TODO: Create some kind of RandomnessUtility to handle def too much random vars in the main xd
+                    gen);
             if (rockSpawnRoll > 90) {
                 int face = distrFaceGen(gen);
                 int angle = distrAngleGen(gen);
@@ -118,7 +118,7 @@ int main(int , char **) {
                     gameObject->positionX += gameObjectNewMovementVector.at(0);
                     gameObject->positionY -= gameObjectNewMovementVector.at(1);
                     gameObject->renderPosX = static_cast<int>(gameObject->positionX);
-                    gameObject->renderPosY = static_cast<int>(gameObject->positionY); //TODO: Move to GameObject::UpdatePosition() ?
+                    gameObject->renderPosY = static_cast<int>(gameObject->positionY);
                     // SDL_Log("GameObject coordinates after re-calculate (float): {%f, %f}; (int): {%i, %i}", gameObject->positionX, gameObject->positionY, gameObject->renderPosX, gameObject->renderPosY);
                 }
             }
@@ -205,7 +205,6 @@ int main(int , char **) {
 
         std::string initScore = "SCORE : 0";
         std::string initHP = "HP : 3";
-        // TODO: Could be useful to have an utility for calculation of a sensible text box size based on font & char sizes
         window.scoreTextBox = std::make_unique<TextBox>(&window, 0, 0, 130, 24, initScore);
         window.healthTextBox = std::make_unique<TextBox>(&window, width - 80, 0, 80, 24, initHP);
         Uint32 lastFrameTime = SDL_GetTicks();
@@ -221,9 +220,8 @@ int main(int , char **) {
 
             const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
             playerAccel = false;
-            // Todo: Add velocity vector which is applied at the end of the scan, so that <<possibly>> it will work for multi-key combos
 
-                // TODO: Here was restart to IDLE which helped with dangling speeding animation, but actually crashed all other ones - but the refactor of a state machine so that this thing idle-jet bug be handled would be welcomed
+
             if (player->movable && player->hp > 0) {
 
                 if (keyboardState[SDL_SCANCODE_W]) {
@@ -331,12 +329,12 @@ int main(int , char **) {
                     gameObject->positionX += gameObjectNewMovementVector.at(0);
                     gameObject->positionY -= gameObjectNewMovementVector.at(1);
                     gameObject->renderPosX = static_cast<int>(gameObject->positionX);
-                    gameObject->renderPosY = static_cast<int>(gameObject->positionY); //TODO: Move to GameObject::UpdatePosition() ?
+                    gameObject->renderPosY = static_cast<int>(gameObject->positionY);
                     // SDL_Log("GameObject coordinates after re-calculate (float): {%f, %f}; (int): {%i, %i}", gameObject->positionX, gameObject->positionY, gameObject->renderPosX, gameObject->renderPosY);
                 }
             }
 
-            int rockSpawnRoll = distrRockGen(gen); // TODO: Create some kind of RandomnessUtility to handle def too much random vars in the main xd
+            int rockSpawnRoll = distrRockGen(gen);
             if (rockSpawnRoll > 98) {
                 int face = distrFaceGen(gen);
                 int angle = distrAngleGen(gen);

@@ -7,7 +7,6 @@
 
 Rock::Rock(Window* _window, GlobalEventHandler* _events) {
     // Please note that this is practically unused
-    // TODO: Possibly for the default constructor should be only substituted some error log to prevent unexpected summons.
     window = _window;
     geh = _events;
     objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/rock.png");
@@ -17,7 +16,6 @@ Rock::Rock(Window* _window, GlobalEventHandler* _events) {
 
 Rock::Rock(Window* _window, GlobalEventHandler* _events, std::string spawn) {
     // Using this constructor with the option 'random' can spawn random rocks
-    // TODO: Possibly merge with 'asteroid constructor'
     geh = _events;
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -26,7 +24,7 @@ Rock::Rock(Window* _window, GlobalEventHandler* _events, std::string spawn) {
 
     while(abs(renderPosX-250) < 30 && abs(renderPosY-250) < 30  ) {
         if (spawn == "random") {
-            std::uniform_int_distribution<> distr(0, 500 - textureHeight); // Todo: dynamic for width/height, though that might not be needed for now.
+            std::uniform_int_distribution<> distr(0, 500 - textureHeight);
             renderPosX = distr(gen);
             renderPosY = distr(gen);
             std::uniform_int_distribution<> distr2(0, 360);
@@ -47,7 +45,7 @@ Rock::Rock(Window* _window, GlobalEventHandler* _events, std::string spawn) {
 
 Rock::Rock(Window *_window, GlobalEventHandler *_events, int face, int initAngle, int spawnPoint, const std::string& spawn) {
     // Using with 'asteroid' spawn parameter will create moving, low-hp cosmic dirtblock; pls note that the method have no assumptions regarding screen params
-    // TODO: Maybe it should be. Why not store them in GEH or other global setting component?
+
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrVelocity(0, 5);
