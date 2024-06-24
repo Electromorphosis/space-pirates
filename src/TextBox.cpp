@@ -12,7 +12,7 @@ TextBox::TextBox(Window *_window, int x, int y, int w, int h, std::string c, int
     height = h;
     content = c;
     Sans = TTF_OpenFont("data/font/Audiowide-Regular.ttf", fontSize);
-    // TODO: Probably I could came up with an idea to better handle fonting than having the path hardcoded, with only diff between constructors being fontSize setup.
+
 }
 
 TextBox::TextBox(Window* _window, int x, int y, int w, int h, std::string c) {

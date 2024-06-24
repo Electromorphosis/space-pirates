@@ -10,7 +10,8 @@ Those of course should be handled in the first place:
 - Sprites has no alpha channel so can occasionally overlap with black blobs.
 - Jet stream particle effect spawns in much less amount that it should.
 - Invisible menu higlights are in Leaderboards and Help.
-- no game over when ship far over screen
+- no game over when ship far over screen.
+- first game run after rebuild started to take much longer after some "unused" includes (that one might be tricky to debug I'm afraid...).
 
 ### PLANNED FEATURES
 **Should haves** - at least some of those would be really preferable to add soon*ish*:

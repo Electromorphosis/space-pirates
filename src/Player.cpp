@@ -8,9 +8,9 @@ Player::Player(Window* _window){
     renderPosX = static_cast<int>(positionX);
     positionY = static_cast<float>(window->Height)/2;
     renderPosY = static_cast<int>(positionY);
-    objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/ship0.png"); // Todo this and one below move to some Texture Management class
+    objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/ship0.png");
     SDL_QueryTexture(objectTexture, NULL, NULL, &textureWidth, &textureHeight);
-    hp = 3; // TODO link to GEH
+    hp = 3;
     name = "player";
 }
 
