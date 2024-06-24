@@ -1,9 +1,7 @@
-//
-// Created by mechlon on 15.06.24.
-//
 
 #ifndef SPACE_PIRATES_LASERBEAM_H
 #define SPACE_PIRATES_LASERBEAM_H
+
 #include "GameObject.h"
 #include "CollisionBox.h"
 #include "CollisionType.h"

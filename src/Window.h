@@ -1,15 +1,15 @@
-//
-// Created by mechlon on 09.06.24.
-//
 
 #ifndef SPACE_PIRATES_WINDOW_H
 #define SPACE_PIRATES_WINDOW_H
+
+#include <vector>
+#include <memory>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <vector>
+
 #include "GameObject.h"
 #include "TextBox.h"
-#include <memory>
 #include "GlobalEventHandler.h"
 
 class GameObject;

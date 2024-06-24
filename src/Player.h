@@ -1,9 +1,7 @@
-//
-// Created by mechlon on 09.06.24.
-//
 
 #ifndef SPACE_PIRATES_PLAYER_H
 #define SPACE_PIRATES_PLAYER_H
+
 #include "GameObject.h"
 
 class Player : public GameObject {

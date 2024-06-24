@@ -1,6 +1,3 @@
-//
-// Created by mechlon on 09.06.24.
-//
 
 #include "Rock.h"
 #include "Window.h"

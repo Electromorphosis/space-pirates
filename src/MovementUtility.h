@@ -1,12 +1,10 @@
-//
-// Created by mechlon on 09.06.24.
-//
 
 #ifndef SPACE_PIRATES_MOVEMENTVECTOR_H
 #define SPACE_PIRATES_MOVEMENTVECTOR_H
-#include <SDL2/SDL.h>
 
 #include <vector>
+
+#include <SDL2/SDL.h>
 
 class MovementUtility {
 public:

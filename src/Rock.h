@@ -1,11 +1,10 @@
-//
-// Created by mechlon on 09.06.24.
-//
 
 #ifndef SPACE_PIRATES_ROCK_H
 #define SPACE_PIRATES_ROCK_H
-#include "GameObject.h"
+
 #include <string>
+
+#include "GameObject.h"
 #include "CollisionBox.h"
 #include "CollisionType.h"
 #include "GlobalEventHandler.h"

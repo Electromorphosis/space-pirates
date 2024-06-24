@@ -1,10 +1,7 @@
-//
-// Created by mechlon on 09.06.24.
-//
 
-#include "Window.h"
 #include <algorithm>
 
+#include "Window.h"
 
 Window::Window(GlobalEventHandler *_events, int windowWidth, int windowHeight) {
     geh = _events;

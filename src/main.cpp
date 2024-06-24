@@ -1,5 +1,12 @@
-#include <SDL2/SDL.h>
+
+#include <memory>
+#include <random>
 #include <vector>
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+
+#include "GlobalEventHandler.h"
 #include "Window.h"
 #include "MovementUtility.h"
 #include "Player.h"
@@ -7,11 +14,6 @@
 #include "TextBox.h"
 #include "Particle.h"
 #include "LaserBeam.h"
-#include <memory>
-#include <random>
-#include <SDL2/SDL_ttf.h>
-#include "GlobalEventHandler.h"
-
 
 int main(int , char **) {
     using namespace std;

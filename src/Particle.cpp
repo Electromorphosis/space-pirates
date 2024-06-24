@@ -1,12 +1,11 @@
-//
-// Created by mechlon on 09.06.24.
-//
 
-#include "Particle.h"
-#include "Window.h"
-#include <iostream>
 #include <random>
+#include <iostream>
+
 #include <SDL2/SDL_render.h>
+
+#include "Window.h"
+#include "Particle.h"
 
 Particle::Particle(Window* _window) {
     window = _window;
