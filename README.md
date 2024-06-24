@@ -10,6 +10,7 @@ Those of course should be handled in the first place:
 - Sprites has no alpha channel so can occasionally overlap with black blobs.
 - Jet stream particle effect spawns in much less amount that it should.
 - Invisible menu higlights are in Leaderboards and Help.
+- no game over when ship far over screen
 
 ### PLANNED FEATURES
 **Should haves** - at least some of those would be really preferable to add soon*ish*:
@@ -18,11 +19,12 @@ Those of course should be handled in the first place:
 - implement global debugMode handler - one place to set dev mode options such as various logging (levels) or at least no need to enable collision boxes for each class one by one lol.
 - includes optimization - move headers to separate directory, implement global headers, namespaces and check includes order (e.g. standard libs, then third-parties, then internal).
 - power-ups like power kits (hp up), jet upgrade kit (max velocity up), shooting upgrade/power-up (either quicker shooting or temp thing like double shot or quick shot burst) - kinda nice to have, but soo easy to implement and makes the game feel much more abundant.
-- some at least minimal main menu would be nice.
-- also leaderboard would nice fit the arcade-like style.
+- ~~some at least minimal main menu would be nice.~~
 - increasing difficulty.
 
 **Good to haves** - not really that crucial, but would really benefit UX/maintainability:
+- help page in main menu
+- also leaderboard would nice fit the arcade-like style.
 - keyboard handler to not trash main logic with multiple keyboard inputs (alongside with probably a lot of other main.cpp cleanings)
 - Chunking for some game objects to improve performance.
 - SFXs.
