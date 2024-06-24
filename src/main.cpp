@@ -76,7 +76,7 @@ int main(int , char **) {
                     int previousMenuView = menuView;
                     menuView = window.menuHighlight;
                     if (previousMenuView == 0 && menuView == 0) menuView = -1;
-                    SDL_Log("Menu option : %i", window.menuHighlight);
+//                    SDL_Log("Menu option : %i", window.menuHighlight);
                     buttonCooldown = 10;
                 }
                 if (keyboardState[SDL_SCANCODE_ESCAPE] || keyboardState[SDL_SCANCODE_Q]) {
@@ -153,7 +153,7 @@ int main(int , char **) {
                     window.textBoxesVector.push_back(
                             std::make_unique<TextBox>(&window, width * 0.1, height * 0.05, width - (width * 0.2),
                                                       height / 3, Help, 30));
-                    SDL_Log("Print help dummy");
+//                    SDL_Log("Print help dummy");
                     break;
                 case 3: // QUIT
                     SDL_Quit();
@@ -379,7 +379,7 @@ int main(int , char **) {
             }
 
             lastFrameTime = SDL_GetTicks();
-            SDL_Log("HP = %i", player->hp);
+//            SDL_Log("HP = %i", player->hp);
             if (player->hp <= 0 && player->currentAnimationState != Player::DESTROY) {
 //        globalEventHandler.gameOn = false;
                 player->currentAnimationState = Player::DESTROY;
