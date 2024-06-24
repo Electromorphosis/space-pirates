@@ -13,23 +13,25 @@ class Window;
 
 class GameObject {
 public:
+    virtual void Render(Window& renderer);
+    virtual void Damage(int dp) = 0;
+
+    SDL_Texture* objectTexture = nullptr;
+    std::string name = "None";
     Window* window;
     GlobalEventHandler* geh;
-    SDL_Texture* objectTexture = nullptr;
+
+    bool movable = false;
     int textureWidth = 0;
     int textureHeight = 0;
+    int velocity = 0;
     float positionX;
     float positionY;
     int renderPosX;
     int renderPosY;
-    virtual void Render(Window& renderer);
-    virtual void Damage(int dp) = 0;
     int ttl;
     int angle;
     int hp;
-    bool movable = false;
-    int velocity = 0;
-    std::string name = "None";
 };
 
 
