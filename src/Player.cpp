@@ -28,7 +28,7 @@ void Player::Render(Window &window) {
 
 
 void Player::UpdateAnimState(Window &renderer) {
-SDL_Log("%i", frameCounter);
+//SDL_Log("%i", frameCounter);
 // Modulo calc on sprites dependd on the length of a given animation
     switch (currentAnimationState) {
         case IDLE: // Always only one frame on idle
@@ -107,7 +107,7 @@ SDL_Log("%i", frameCounter);
                     frameCounter = 0;
                 }
             }
-            SDL_Log("ttl = %i, state = %u", animStateTtl, currentAnimationState);
+//            SDL_Log("ttl = %i, state = %u", animStateTtl, currentAnimationState);
             objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/shield.png");
             break;
         case DESTROY:

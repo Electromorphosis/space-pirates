@@ -44,7 +44,7 @@ Rock::Rock(Window* _window, GlobalEventHandler* _events, std::string spawn) {
 }
 
 Rock::~Rock() {
-SDL_Log("Rock removed");
+//SDL_Log("Rock removed");
     delete objectTexture;
     delete window;
 }

@@ -124,7 +124,7 @@ void Window::CheckAllCollisions() {
         for (auto& gameObject : gameObjectsVector) {
         if (gameObject  ) {
             if (checkIfTwoObjectsCollide(gameObject, player)) {
-                                        SDL_Log("Collision!");
+//                                        SDL_Log("Collision!");
 
                 gameObject->Damage(20);
                 player->Damage(1);
