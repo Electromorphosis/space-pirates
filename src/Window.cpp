@@ -9,8 +9,6 @@ Window::Window(GlobalEventHandler *_events, int windowWidth, int windowHeight) {
     Height = windowHeight;
     SDL_Init( SDL_INIT_EVERYTHING );
     SDL_CreateWindowAndRenderer( windowWidth, windowHeight,SDL_WINDOW_SHOWN, &window, &renderer);
-
-
 }
 
 Window::~Window() {
@@ -24,6 +22,7 @@ void Window::RenderAll() {
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 
+    // Check & render interactive, solid things such as rocks.
     this->TidyGameObjects();
     for (const auto& gameObject : gameObjectsVector) {
         if (gameObject) {
@@ -31,35 +30,41 @@ void Window::RenderAll() {
         }
     }
 
+    // Check & render laser bolts etc.
     this->TidyProjectiles();
     for (const auto& gameObject : projectilesVector) {
         if (gameObject) {
-            gameObject->Render(*this); // Dereference after null check
+            gameObject->Render(*this);
         }
     }
 
+    // Check & render small, non-solid VFX-type objects
     this->TidyParticles();
     for (const auto& gameObject : particleEffectsVector) {
         if (gameObject) {
-            gameObject->Render(*this); // Dereference after null check
+            gameObject->Render(*this);
         }
     }
 
+    // Render Game-loop exclusive elements
     if (!renderMenu) {
         player->Render(*this);
         scoreTextBox->Render(*this);
         healthTextBox->Render(*this);
     }
 
+    // Render Menu-exclusive elements
     if (renderMenu) {
         RenderMenuHighlight();
     }
 
+    // Render all other textBoxes, such as notifications (and also menu buttons...)
     for (const auto& textBox : textBoxesVector) {
         if (textBox) {
-            textBox->Render(*this); // Dereference after null check
+            textBox->Render(*this);
         }
     }
+
     SDL_RenderPresent(renderer); // draw frame to screen
 }
 
@@ -78,6 +83,7 @@ void Window::TidyParticles() {
 
 void Window::TidyProjectiles() {
     // SDL_Log("Vector length pre-tidying: %zu", projectilesVector.size());
+
     // Remove lasers too far away
     projectilesVector.erase(
             std::remove_if(
@@ -90,6 +96,7 @@ void Window::TidyProjectiles() {
             ),
             projectilesVector.end()
     );
+
     // SDL_Log("Vector length post-tidying: %zu", projectilesVector.size());
 
     // Remove lasers that hit the target
@@ -112,30 +119,29 @@ void Window::CheckAllCollisions() {
             for (auto& gameObject : gameObjectsVector) {
                 if (gameObject) {
                     if (checkIfTwoObjectsCollide(projectile, gameObject)) {
-//                        SDL_Log("Collision!");
+                        // SDL_Log("Collision!");
                         gameObject->Damage(1);
                         projectile->Damage(1);
+                    }
                 }
-
             }
         }
-    }}
+    }
 
-        for (auto& gameObject : gameObjectsVector) {
+    for (auto& gameObject : gameObjectsVector) {
         if (gameObject  ) {
             if (checkIfTwoObjectsCollide(gameObject, player)) {
-//                                        SDL_Log("Collision!");
+                // SDL_Log("Collision!");
 
                 gameObject->Damage(20);
                 player->Damage(1);
             }
         }
-        }
     }
 
+}
 
 bool Window::checkIfTwoObjectsCollide(const std::unique_ptr<GameObject> &object1, const std::unique_ptr<GameObject> &object2) {
-    {
         int o1_x = object1->renderPosX;
         int o1_y = object1->renderPosY;
         int o1_width = 0;
@@ -159,19 +165,20 @@ bool Window::checkIfTwoObjectsCollide(const std::unique_ptr<GameObject> &object1
             o2_height = 32;
         }
 
-//        SDL_Log("Object1 x : %i, y : %i, width : %i, height : %i", o1_x, o1_y, o1_width, o1_height);
-//        SDL_Log("Object2 x : %i, y : %i, width : %i, height : %i", o2_x, o2_y, o2_width, o2_height);
+        // SDL_Log("Object1 x : %i, y : %i, width : %i, height : %i", o1_x, o1_y, o1_width, o1_height);
+        // SDL_Log("Object2 x : %i, y : %i, width : %i, height : %i", o2_x, o2_y, o2_width, o2_height);
         // Check for overlap on both X and Y axes
+
         return (o1_x < o2_x + o2_width &&
                 o1_x + o1_width > o2_x &&
                 o1_y < o2_y + o2_height &&
                 o1_y + o1_height > o2_y);
-    };
-}
+};
 
 void Window::TidyGameObjects() {
     // SDL_Log("Vector length pre-tidying: %zu", projectilesVector.size());
-    // Remove lasers too far away
+
+    // Remove GameObjects
     gameObjectsVector.erase(
             std::remove_if(
                     gameObjectsVector.begin(),
@@ -185,7 +192,7 @@ void Window::TidyGameObjects() {
     );
     // SDL_Log("Vector length post-tidying: %zu", projectilesVector.size());
 
-    // Remove GameObjects being hit the target
+    // Remove GameObjects being hit (i.e. hp-based)
     gameObjectsVector.erase(
             std::remove_if(
                     gameObjectsVector.begin(),
@@ -199,48 +206,50 @@ void Window::TidyGameObjects() {
 }
 
 void Window::UpdateGui() {
+    // Refers to in-loop GUI
     scoreTextBox->content = "SCORE : " + std::to_string(geh->score);
     healthTextBox->content = "HP : " + std::to_string(player->hp);
 }
 
 void Window::RenderMenuHighlight() {
     SDL_Rect rect;
-switch(menuHighlight) {
-    case 0: // MAIN MENU
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        rect = { static_cast<int>(Width*0.30), static_cast<int>(Height*0.45), static_cast<int>(Width-(Width*0.6)), Height/9 };
-        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
-        SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
-        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
-        SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
-        break;
-    case 1: // LEADERBOARDS
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        rect = { static_cast<int>(Width*0.10), static_cast<int>(Height*0.55), static_cast<int>(Width-(Width*0.2)), Height/9 };
-        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
-        SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
-        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
-        SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
-        break;
-    case 2: // HELP
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        rect = { static_cast<int>(Width*0.35), static_cast<int>(Height*0.65), static_cast<int>(Width-(Width*0.7)), Height/9 };
-        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
-        SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
-        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
-        SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
-        break;
-    case 3: // QUIT
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        rect = { static_cast<int>(Width*0.35), static_cast<int>(Height*0.75), static_cast<int>(Width-(Width*0.7)), Height/9 };
-        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
-        SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
-        SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
-        SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
-        break;
-    default:
-        break;
-}
+
+    switch(menuHighlight) {
+        case 0: // MAIN MENU
+            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+            rect = { static_cast<int>(Width*0.30), static_cast<int>(Height*0.45), static_cast<int>(Width-(Width*0.6)), Height/9 };
+            SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
+            SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
+            SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
+            SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
+            break;
+        case 1: // LEADERBOARDS
+            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+            rect = { static_cast<int>(Width*0.10), static_cast<int>(Height*0.55), static_cast<int>(Width-(Width*0.2)), Height/9 };
+            SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
+            SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
+            SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
+            SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
+            break;
+        case 2: // HELP
+            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+            rect = { static_cast<int>(Width*0.35), static_cast<int>(Height*0.65), static_cast<int>(Width-(Width*0.7)), Height/9 };
+            SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
+            SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
+            SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
+            SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
+            break;
+        case 3: // QUIT
+            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+            rect = { static_cast<int>(Width*0.35), static_cast<int>(Height*0.75), static_cast<int>(Width-(Width*0.7)), Height/9 };
+            SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y); // Top line
+            SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h); // Bottom line
+            SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h); // Left line
+            SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h); // Right line
+            break;
+        default:
+            break;
+    }
 }
 
 void Window::RestartRenderer() {

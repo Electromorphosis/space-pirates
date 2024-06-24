@@ -3,11 +3,10 @@
 #define SPACE_PIRATES_COLLISIONTYPE_H
 
 enum class CollisionType {
-    None,
     TerrainDestructible,
     FriendlyProjectile,
-    Player
+    Player,
+    None,
 };
-
 
 #endif //SPACE_PIRATES_COLLISIONTYPE_H

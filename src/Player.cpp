@@ -19,17 +19,16 @@ void Player::Render(Window &window) {
     SDL_Rect dstRect = {renderPosX, renderPosY, 32, 32};
     SDL_Rect srcRect = {0, 0, 32, 32};;
     SDL_RendererFlip flip = SDL_RendererFlip();
-////    SDL_Log("test");
+    // SDL_Log("test");
     SDL_RenderCopyEx(window.renderer, objectTexture, &srcRect, &dstRect, angle, nullptr, flip);
-//    CollisionBox collisionBox = CollisionBox(&window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
-//    collisionBox.Render(window);
-
+    // CollisionBox collisionBox = CollisionBox(&window, positionX, positionY, textureWidth, textureHeight, CollisionType::TerrainDestructible);
+    // collisionBox.Render(window);
 }
 
-
 void Player::UpdateAnimState(Window &renderer) {
-//SDL_Log("%i", frameCounter);
-// Modulo calc on sprites dependd on the length of a given animation
+    //SDL_Log("%i", frameCounter);
+
+    // Modulo calc on sprites depend on the length of a given animation
     switch (currentAnimationState) {
         case IDLE: // Always only one frame on idle
         frameCounter = 0;
@@ -107,7 +106,7 @@ void Player::UpdateAnimState(Window &renderer) {
                     frameCounter = 0;
                 }
             }
-//            SDL_Log("ttl = %i, state = %u", animStateTtl, currentAnimationState);
+            // SDL_Log("ttl = %i, state = %u", animStateTtl, currentAnimationState);
             objectTexture = IMG_LoadTexture(window->renderer, "../data/ShipsPNG/shield.png");
             break;
         case DESTROY:
@@ -125,15 +124,9 @@ void Player::UpdateAnimState(Window &renderer) {
         default:
             break;
     }
-//        case DAMAGED:
-//            break;
-
-    };
-
-
+};
 
 void Player::Damage(int dp) {
     currentAnimationState = DAMAGED;
     hp -= dp;
 }
-

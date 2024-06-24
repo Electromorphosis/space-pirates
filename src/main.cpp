@@ -35,6 +35,7 @@ int main(int , char **) {
     std::uniform_int_distribution<> distrAngleGen(0, 180);
     std::uniform_int_distribution<> distrFaceGen(0, 3); // 0 - up, 1 - right, 2 - down, 3 - left
     Window window(&globalEventHandler, width, height);
+
     //Initialize SDL_ttf
     if (TTF_Init() == -1) {
         printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
@@ -43,9 +44,15 @@ int main(int , char **) {
     const Uint32 SHOOT_COOLDOWN_MS = 1000;
     Uint32 lastShootTime = 0;
 
+    //================\\
+    // MAIN GAME LOOP \\
+    //================\\
 
     while (true) {
-        // MAIN MENU LOGIC
+
+        //=================\\
+        // MAIN MENU LOGIC \\
+        //=================\\
 
         globalEventHandler.RestartEventsHandler();
         window.RestartRenderer();
@@ -76,7 +83,7 @@ int main(int , char **) {
                     int previousMenuView = menuView;
                     menuView = window.menuHighlight;
                     if (previousMenuView == 0 && menuView == 0) menuView = -1;
-//                    SDL_Log("Menu option : %i", window.menuHighlight);
+                    // SDL_Log("Menu option : %i", window.menuHighlight);
                     buttonCooldown = 10;
                 }
                 if (keyboardState[SDL_SCANCODE_ESCAPE] || keyboardState[SDL_SCANCODE_Q]) {
@@ -96,7 +103,6 @@ int main(int , char **) {
                 } else {
                     spawnPoint = distrHeightGen(gen);
                 }
-//
 
                 window.gameObjectsVector.push_back(
                         std::make_unique<Rock>(&window, &globalEventHandler, face, angle, spawnPoint, "asteroid"));
@@ -106,14 +112,14 @@ int main(int , char **) {
             for (auto &gameObject: window.gameObjectsVector) {
                 if (gameObject && gameObject->movable) {
                     std::vector<float> gameObjectNewMovementVector = movementUtility->calculate(gameObject->angle);
-//            SDL_Log("Vector calculated: { %f, %f }", gameObjectNewMovementVector.at(0), gameObjectNewMovementVector.at(1));
-//              SDL_Log("GameObject coordinates before re-calculate (float): {%f, %f}", gameObject->positionX, gameObject->positionY);
+                    // SDL_Log("Vector calculated: { %f, %f }", gameObjectNewMovementVector.at(0), gameObjectNewMovementVector.at(1));
+                    // SDL_Log("GameObject coordinates before re-calculate (float): {%f, %f}", gameObject->positionX, gameObject->positionY);
 
                     gameObject->positionX += gameObjectNewMovementVector.at(0);
                     gameObject->positionY -= gameObjectNewMovementVector.at(1);
                     gameObject->renderPosX = static_cast<int>(gameObject->positionX);
                     gameObject->renderPosY = static_cast<int>(gameObject->positionY); //TODO: Move to GameObject::UpdatePosition() ?
-//              SDL_Log("GameObject coordinates after re-calculate (float): {%f, %f}; (int): {%i, %i}", gameObject->positionX, gameObject->positionY, gameObject->renderPosX, gameObject->renderPosY);
+                    // SDL_Log("GameObject coordinates after re-calculate (float): {%f, %f}; (int): {%i, %i}", gameObject->positionX, gameObject->positionY, gameObject->renderPosX, gameObject->renderPosY);
                 }
             }
 
@@ -153,7 +159,7 @@ int main(int , char **) {
                     window.textBoxesVector.push_back(
                             std::make_unique<TextBox>(&window, width * 0.1, height * 0.05, width - (width * 0.2),
                                                       height / 3, Help, 30));
-//                    SDL_Log("Print help dummy");
+                    // SDL_Log("Print help dummy");
                     break;
                 case 3: // QUIT
                     SDL_Quit();
@@ -175,32 +181,28 @@ int main(int , char **) {
             if (buttonCooldown > 0) {
                 buttonCooldown--;
             }
+
             // Debug mode - straight to the game loop
-//            globalEventHandler.gameOn = true;
+             globalEventHandler.gameOn = true;
         }
 
+        //===================\\
+        // ACTUAL GAME LOGIC \\
+        //===================\\
 
-
-        // ACTUAL GAME LOGIC
         window.textBoxesVector.clear();
         window.gameObjectsVector.clear();
         window.RenderAll();
-//Player player(&window);
-//std::unique_ptr<Player> player(new Player(&window));
         window.renderMenu = false;
         Player *player = new Player(&window);
         player->movable = true;
         window.player = std::unique_ptr<Player>(player);
 
-////    Player& player;
-//    if (window.gameObjectsVector.at(0)) { // Check if the vector is not empty
-//        Player* playerPtr = static_cast<Player*>(window.gameObjectsVector.at(0).get());
-////        player = *playerPtr; // Dereference the pointer and assign to the reference
-//    }
-
+        // Generate some random rocks - actually not 100% needed thing
         for (int i = 0; i < 20; i++) {
             window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, &globalEventHandler, "random"));
         }
+
         std::string initScore = "SCORE : 0";
         std::string initHP = "HP : 3";
         // TODO: Could be useful to have an utility for calculation of a sensible text box size based on font & char sizes
@@ -208,27 +210,21 @@ int main(int , char **) {
         window.healthTextBox = std::make_unique<TextBox>(&window, width - 80, 0, 80, 24, initHP);
         Uint32 lastFrameTime = SDL_GetTicks();
 
-
-//    window.gameObjectsVector.push_back(std::make_unique<Rock>(&window, 0, 180, 250, "asteroid"));
-
         bool gameLoop = true;
         while (gameLoop) {
-
 
             SDL_Event event;
             while (SDL_PollEvent(&event)) { // check if there are some events
                 if (event.type == SDL_QUIT)
                     return 0;
-
             }
 
             const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
             playerAccel = false;
-// Todo: Add velocity vector which is applied at the end of the scan, so that <<possibly>> it will work for multi-key combos
+            // Todo: Add velocity vector which is applied at the end of the scan, so that <<possibly>> it will work for multi-key combos
 
-//    player->currentAnimationState = Player::IDLE;
+                // TODO: Here was restart to IDLE which helped with dangling speeding animation, but actually crashed all other ones - but the refactor of a state machine so that this thing idle-jet bug be handled would be welcomed
             if (player->movable && player->hp > 0) {
-
 
                 if (keyboardState[SDL_SCANCODE_W]) {
                     player->velocity += 0.1;
@@ -255,6 +251,7 @@ int main(int , char **) {
                     player->currentAnimationState = Player::SHOOT;
                     spawnPlayerLaser = true;
                 }
+
             } else {
                 playerAccel = false;
                 player->isShooting = false;
@@ -264,88 +261,82 @@ int main(int , char **) {
                 SDL_Quit();
                 return 0;
             }
-//
-//      if (event.type == SDL_KEYDOWN && keyboardState[SDL_SCANCODE_SPACE]) {
-//          playerShoots = true;
-//      }
 
-//        SDL_Log("Velocity: %f", player.velocity);
-//      SDL_Log("Angle: %i*", player.angle);
+
+            // SDL_Log("Velocity: %f", player.velocity);
+            // SDL_Log("Angle: %i*", player.angle);
+
             if (player->velocity < -0.5) player->velocity = -0.5;
             if (player->velocity > 1) {
                 player->velocity = 1;
-//        playerAccel = false;
+                // playerAccel = false;
             }
-
 
             // Particle effects
             if (playerAccel) {
-
                 int partRoll = distrJetParticles(gen);
                 if (player->velocity != 0 && partRoll == 1) { // Some random colored particles, but most pale
                     window.particleEffectsVector.push_back(
-                            std::make_unique<Particle>(&window, player->positionX, player->positionY, 10, "random",
-                                                       true));
-                    //      SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
+                            std::make_unique<Particle>(&window, player->positionX, player->positionY,
+                                                       10, "random",true));
+                    // SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
                 } else {
                     window.particleEffectsVector.push_back(
-                            std::make_unique<Particle>(&window, player->positionX, player->positionY, 10, "random",
-                                                       false));
+                            std::make_unique<Particle>(&window, player->positionX, player->positionY,
+                                                       10, "random", false));
                 }
-
             }
 
 
             // Position update for movement objects
             std::vector<float> newMovementVector = movementUtility->calculate(player->angle);
-//      SDL_Log("%f, %f", newMovementVector.at(0), newMovementVector.at(1));
+            // SDL_Log("%f, %f", newMovementVector.at(0), newMovementVector.at(1));
             player->positionX += newMovementVector.at(0) * player->velocity;
             player->positionY -= newMovementVector.at(1) * player->velocity;
 
             player->renderPosX = static_cast<int>(player->positionX);
             player->renderPosY = static_cast<int>(player->positionY);
-//      SDL_Log("Player coordinates (render): {%i, %i}", player->renderPosX, player->renderPosY);
+            // SDL_Log("Player coordinates (render): {%i, %i}", player->renderPosX, player->renderPosY);
 
-//      window.projectilesVector.push_back(std::make_unique<LaserBeam>(&window, player->positionX, player->positionY, player->angle));
+            // window.projectilesVector.push_back(std::make_unique<LaserBeam>(&window, player->positionX, player->positionY, player->angle));
 
 
             if (spawnPlayerLaser) {
                 window.projectilesVector.push_back(
-                        std::make_unique<LaserBeam>(&window, player->positionX, player->positionY, player->angle));
-//        SDL_Log("Player coordinates (float): {%f, %f}", player->positionX, player->positionY);
+                            std::make_unique<LaserBeam>(&window, player->positionX, player->positionY, player->angle));
+                // SDL_Log("Player coordinates (float): {%f, %f}", player->positionX, player->positionY);
                 spawnPlayerLaser = false;
             }
 
             for (auto &projectile: window.projectilesVector) {
                 if (projectile) {
                     std::vector<float> projectileNewMovementVector = movementUtility->calculate(projectile->angle);
-//            SDL_Log("Vector calculated: { %f, %f }", projectileNewMovementVector.at(0), projectileNewMovementVector.at(1));
-//              SDL_Log("Projectile coordinates before re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
+                    // SDL_Log("Vector calculated: { %f, %f }", projectileNewMovementVector.at(0), projectileNewMovementVector.at(1));
+                    // SDL_Log("Projectile coordinates before re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
 
                     projectile->positionX += projectileNewMovementVector.at(0) * 5;
                     projectile->positionY -= projectileNewMovementVector.at(1) * 5;
                     projectile->renderPosX = static_cast<int>(projectile->positionX);
                     projectile->renderPosY = static_cast<int>(projectile->positionY);
-//              SDL_Log("Projectile coordinates after re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
+                    // SDL_Log("Projectile coordinates after re-calculate (float): {%f, %f}", projectile->positionX, projectile->positionY);
                 }
             }
 
             for (auto &gameObject: window.gameObjectsVector) {
                 if (gameObject && gameObject->movable) {
                     std::vector<float> gameObjectNewMovementVector = movementUtility->calculate(gameObject->angle);
-//            SDL_Log("Vector calculated: { %f, %f }", gameObjectNewMovementVector.at(0), gameObjectNewMovementVector.at(1));
-//              SDL_Log("GameObject coordinates before re-calculate (float): {%f, %f}", gameObject->positionX, gameObject->positionY);
+                    // SDL_Log("Vector calculated: { %f, %f }", gameObjectNewMovementVector.at(0), gameObjectNewMovementVector.at(1));
+                    // SDL_Log("GameObject coordinates before re-calculate (float): {%f, %f}", gameObject->positionX, gameObject->positionY);
 
                     gameObject->positionX += gameObjectNewMovementVector.at(0);
                     gameObject->positionY -= gameObjectNewMovementVector.at(1);
                     gameObject->renderPosX = static_cast<int>(gameObject->positionX);
                     gameObject->renderPosY = static_cast<int>(gameObject->positionY); //TODO: Move to GameObject::UpdatePosition() ?
-//              SDL_Log("GameObject coordinates after re-calculate (float): {%f, %f}; (int): {%i, %i}", gameObject->positionX, gameObject->positionY, gameObject->renderPosX, gameObject->renderPosY);
+                    // SDL_Log("GameObject coordinates after re-calculate (float): {%f, %f}; (int): {%i, %i}", gameObject->positionX, gameObject->positionY, gameObject->renderPosX, gameObject->renderPosY);
                 }
             }
 
-            int rockSpawnRoll = distrRockGen(
-                    gen); // TODO: Create some kind of RandomnessUtility to handle def too much random vars in the main xd
+            int rockSpawnRoll = distrRockGen(gen); // TODO: Create some kind of RandomnessUtility to handle def too much random vars in the main xd
             if (rockSpawnRoll > 98) {
                 int face = distrFaceGen(gen);
                 int angle = distrAngleGen(gen);
@@ -356,12 +347,9 @@ int main(int , char **) {
                     spawnPoint = distrHeightGen(gen);
                 }
 
-
                 window.gameObjectsVector.push_back(
                         std::make_unique<Rock>(&window, &globalEventHandler, face, angle, spawnPoint, "asteroid"));
-
             }
-
 
             window.CheckAllCollisions();
             window.UpdateGui();
@@ -379,65 +367,73 @@ int main(int , char **) {
             }
 
             lastFrameTime = SDL_GetTicks();
-//            SDL_Log("HP = %i", player->hp);
+            // SDL_Log("HP = %i", player->hp);
+
+            // ENDING SEQUENCE
+            // I. No more health - stop collision, start timer & explosion animation
             if (player->hp <= 0 && player->currentAnimationState != Player::DESTROY) {
-//        globalEventHandler.gameOn = false;
                 player->currentAnimationState = Player::DESTROY;
                 player->name = "None"; // This will disable further collisions
                 globalEventHandler.gameOverTtl = 100;
             }
+            // II. Anim started - slow down and countdown
             if (player->currentAnimationState == Player::DESTROY) {
-                player->velocity /= 1.1;
-                globalEventHandler.gameOverTtl -= 1;
-
+                    player->velocity /= 1.1;
+                    globalEventHandler.gameOverTtl -= 1;
             }
+            // III. Start spawning particles
             if (globalEventHandler.gameOverTtl <= 70) {
                 for (int i = 0; i < 15; i++) {
                     int partRoll = distrExplosionParticles(gen);
                     if (partRoll >= 3) { // Random particles with or without the color
                         window.particleEffectsVector.push_back(
-                                std::make_unique<Particle>(&window, player->positionX, player->positionY, 15,
-                                                           "explosion", true));
-                        //      SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
+                                std::make_unique<Particle>(&window, player->positionX, player->positionY,
+                                                           15, "explosion", true));
+                        // SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
                     } else {
                         window.particleEffectsVector.push_back(
-                                std::make_unique<Particle>(&window, player->positionX, player->positionY, 15,
-                                                           "explosion", false));
+                                std::make_unique<Particle>(&window, player->positionX, player->positionY,
+                                                               15, "explosion", false));
                     }
                 }
-
             }
 
+            // IV. Spawn EVEN MORE particles
             if (globalEventHandler.gameOverTtl <= 60) {
                 for (int i = 0; i < 15; i++) {
                     int partRoll = distrExplosionParticles(gen);
                     if (partRoll >= 2) { // Random particles with or without the color
                         window.particleEffectsVector.push_back(
-                                std::make_unique<Particle>(&window, player->positionX, player->positionY, 30,
-                                                           "explosion", true));
-                        //      SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
+                                std::make_unique<Particle>(&window, player->positionX, player->positionY,
+                                                           30,"explosion", true));
+                        // SDL_Log("At x:%i, y:%i particle was generated!", window.gameObjectsVector.back()->renderPosX, window.gameObjectsVector.back()->renderPosY);
                     } else {
                         window.particleEffectsVector.push_back(
-                                std::make_unique<Particle>(&window, player->positionX, player->positionY, 30,
-                                                           "explosion", false));
+                                std::make_unique<Particle>(&window, player->positionX, player->positionY,
+                                                           30,"explosion", false));
                     }
                 }
 
             }
-            if (globalEventHandler.gameOverTtl <= 50) {
-                globalEventHandler.gameOn = false;
 
+            // V. Freeze further rendering
+            if (globalEventHandler.gameOverTtl <= 50) {
+                    globalEventHandler.gameOn = false;
             }
+
+            // VI. Stop gamescreen loop
             if (globalEventHandler.gameOverTtl <= 0) {
                 gameLoop = false;
             }
 
         }
-        std::string gameOverText = "GAME OVER";
-        window.textBoxesVector.push_back(
-                std::make_unique<TextBox>(&window, width / 3, height / 3, width / 3, height / 6, gameOverText, 20));
-        window.RenderAll();
-        SDL_Delay(3500);
+
+    // VII. Static Game over screen & then loop back to main menu
+    std::string gameOverText = "GAME OVER";
+    window.textBoxesVector.push_back(
+    std::make_unique<TextBox>(&window, width / 3, height / 3, width / 3, height / 6, gameOverText, 20));
+    window.RenderAll();
+    SDL_Delay(3500);
 
     }
     return 0;

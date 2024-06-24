@@ -6,8 +6,6 @@
 
 class Player : public GameObject {
 public:
-    Player(Window* _window);
-
     enum PlayerAnimationStates {
         IDLE,
         FORWARD,
@@ -18,7 +16,16 @@ public:
         DAMAGED,
         DESTROY
     };
+
+    Player(Window* _window);
+    void Render(Window &renderer) override;
+    void UpdateAnimState(Window &renderer);
+    void Damage(int dp) override;
+
     PlayerAnimationStates currentAnimationState = IDLE;
+
+    bool damaged = true;
+    bool isShooting = false;
     int textureWidth = 32;
     int textureHeight = 32;
     float positionX = 0;
@@ -26,14 +33,7 @@ public:
     float velocity = 0;
     int angle = 0;
     int frameCounter = 0;
-    bool isShooting = false;
-    void Render(Window &renderer) override;
-    void UpdateAnimState(Window &renderer);
-    void Damage(int dp) override;
-    void Destroy();
     int animStateTtl = 0;
-    bool damaged = true;
 };
-
 
 #endif //SPACE_PIRATES_PLAYER_H

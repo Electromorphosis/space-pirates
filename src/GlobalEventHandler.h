@@ -5,13 +5,14 @@
 class GlobalEventHandler {
     // AKA fancy name (& java-esque solution) for the object to store game score
 public:
-    int score = 0;
-    int difficulty;
+    explicit GlobalEventHandler(int diffLevel);
+
+    void RestartEventsHandler();
+
     bool gameOn = true;
     int gameOverTtl = 999;
-    explicit GlobalEventHandler(int diffLevel);
-    void RestartEventsHandler();
+    int score = 0;
+    int difficulty;
 };
-
 
 #endif //SPACE_PIRATES_GLOBALEVENTHANDLER_H
