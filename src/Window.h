@@ -8,7 +8,6 @@
 #include <SDL2/SDL_image.h>
 #include <vector>
 #include "GameObject.h"
-//#include "Particle.h"
 #include "TextBox.h"
 #include <memory>
 #include "GlobalEventHandler.h"

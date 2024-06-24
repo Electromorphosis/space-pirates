@@ -4,8 +4,6 @@
 
 #include "Player.h"
 #include "Window.h"
-#include "CollisionType.h"
-#include "CollisionBox.h"
 
 Player::Player(Window* _window){
     window = _window;

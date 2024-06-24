@@ -4,9 +4,7 @@
 
 #include "Window.h"
 #include <algorithm>
-#include <SDL2/SDL_ttf.h>
 
-//#include "Particle.h"
 
 Window::Window(GlobalEventHandler *_events, int windowWidth, int windowHeight) {
     geh = _events;
